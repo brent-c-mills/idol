@@ -10,11 +10,11 @@ echo "idol.sh";
 echo "";
 
 echo "${bold}NAME${normal}"
-echo "	idol.sh - Jenkins XML file generator";
+echo "	idol.sh - Golden Image BATS test generator";
 echo "";
 
 echo "${bold}SYNOPSIS${normal}"
-echo "	${bold}idol.sh${normal} [-p] [--longoption ...] [-c name] [-p name]";
+echo "	${bold}idol.sh${normal} [-p] [--longoption ...] [-c name] [-t name]";
 echo "";
 
 echo "${bold}DESCRIPTION${normal}";
