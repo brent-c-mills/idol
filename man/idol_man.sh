@@ -14,7 +14,7 @@ echo "	idol.sh - Golden Image BATS test generator";
 echo "";
 
 echo "${bold}SYNOPSIS${normal}"
-echo "	${bold}idol.sh${normal} [-p] [--longoption ...] [-c name] [-t name]";
+echo "	${bold}idol.sh${normal} [-lp] [--longoption ...] [-c name] [-t name]";
 echo "";
 
 echo "${bold}DESCRIPTION${normal}";
@@ -28,10 +28,12 @@ echo "";
 echo "${bold}COMMAND-LINE OPTIONS${normal}"
 echo "	${bold}-c, --create${normal}	Create an Idol test suite from a running system.";
 echo "";
-echo "	${bold}-t, --test${normal}	Run the specified Idol test suite against the cu-";
-echo "			rrent system.";
+echo "	${bold}-l, --list${normal}	List all currently stored golden images.";
 echo "";
 echo "	${bold}-p, --package${normal}	Package the specified Idol test suite for deploy-";
 echo "			ment on a remote system.";
+echo "";
+echo "	${bold}-t, --test${normal}	Run the specified Idol test suite against the cu-";
+echo "			rrent system.";
 echo "";
 exit;
