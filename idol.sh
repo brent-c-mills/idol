@@ -10,7 +10,7 @@ clear
 	BIN_DIR=$PWD/bin
 	LOG_DIR=$PWD/log
 	LOG_OUT=$LOG_DIR/log_$NOW.txt
-	TEST_OUT=$PWD/tests
+	TEST_DIR=$PWD/tests
 	MAN_DIR=$PWD/man
 
 ### END DECLARATIONS
@@ -45,7 +45,7 @@ clear
 
 	{
 	if [[ "$1" = "-l" ]] || [[ "$1" = "list" ]]; then
-		$BIN_DIR/list_idols.sh $TEST_OUT;
+		$BIN_DIR/list_idols.sh $TEST_DIR;
 		exit 0;
 	fi
 	}
@@ -58,14 +58,17 @@ clear
 		if [[ -a /etc/centos-release ]] || [[ -a /etc/redhat-release ]]; then
 			echo "Host OS recognized as CentOS / Redhat." | tee -a $LOG_OUT;
 			$BIN_DIR/idol_create_centos.sh $IDOL_NAME
+			exit 0;
 
 		elif [[ -a /etc/os-release ]]; then
 			echo "Host OS recognized as Debian / Ubuntu." | tee -a $LOG_OUT;
-			$BIN_DIR/idol_create_ubuntu.sh $IDOL_NAME	
+			$BIN_DIR/idol_create_ubuntu.sh $IDOL_NAME
+			exit 0;
 
 		elif [[ "$(uname)" -eq "Darwin" ]]; then
 			echo "Host OS recognized as Apple OS X." | tee -a $LOG_OUT;
 			$BIN_DIR/idol_create_os_x.sh $IDOL_NAME	
+			exit 0;
 		else echo "Sorry.  This operating system is not supported at this time." | tee -a $LOG_OUT; exit 5;
 		fi
 
@@ -74,5 +77,21 @@ clear
 
 #TEST EXISTING IDOL
 	{
-	if [[ "$1" -eq "-c" ]]
+	if [[ "$1" -eq "-t" ]] || [[ "$1" = "test" ]]; then
+		IDOL_NAME=$2;
+		echo "Verifying Idol "${IDOL_NAME}"..." | tee -a $LOG_OUT;
+		if [[ -z ${TEST_DIR}/${IDOL_NAME} ]]; then
+			echo "Initiating BATS tests on Idol "${IDOL_NAME}"." | tee -a $LOG_OUT;
+			bats ${TEST_DIR}/${IDOL_NAME}
+			exit 0;
+		else
+			echo "Idol "${IDOL_NAME}" not found." | tee -a $LOG_OUT; exit 6;
+		fi
+	fi	
+	}
+
+#PACKAGE IDOL INSTANCE FOR REMOTE USE
+	{
+	if [[ "$1" -eq "-p" ]] || [[ "$1" -eq "package" ]]
+		echo "PACKAGE FUNCTION COMING IN A FUTURE RELEASE..."
 	}
