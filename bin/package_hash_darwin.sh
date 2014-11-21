@@ -27,14 +27,14 @@ echo "" >> $OUTPUT_BATS
 #Generating Initial Package List
 rm -f /tmp/package.txt && touch /tmp/package.txt
 rm -f /tmp/failedlist.txt && touch /tmp/failedlist.txt
-rpm -qa >> /tmp/packge.txt
+ls /Applications/ >> /tmp/packge.txt
 
 while IFS=, read -r package; do
 
     PACKAGE=$package
 
     echo "@test \"SOFTWARE CHECK - "${PACKAGE}"\" {" >> $OUTPUT_BATS
-    echo "rpm -qa | grep \""${PACKAGE}"\"" >> $OUTPUT_BATS
+    echo "ls /Applications | grep \""${PACKAGE}"\"" >> $OUTPUT_BATS
     echo "[ \$? -eq 0 ]" >> $OUTPUT_BATS
     echo "}" >> $OUTPUT_BATS
     echo " " >> $OUTPUT_BATS
@@ -46,7 +46,7 @@ done < /tmp/package.txt
 
 echo "Number of Packages processed.         "$PROCESSED | tee -a $LOG_OUT;
 echo "Number of BATS Successfully Created.  "$SUCCESS | tee -a $LOG_OUT;
-echo "Number of BATS Failed.                "$FAILED | tee -a $LOG_OUT;
+echo "Number of BATS Failed.                "$FAIL | tee -a $LOG_OUT;
 echo "FAILED BATS:      
                     "
 while IFS=, read -r FAILEDPACKAGE; do

@@ -10,11 +10,6 @@ MAN_DIR=$BASE_DIR/man;
 IDOL_DIR=$TEST_DIR/$IDOL_NAME;
 
 OUTPUT_BATS=$IDOL_DIR/package_full.bats
-FAILEDLIST=/tmp/failedlist.txt
-
-PROCESSED=0
-SUCCESS=0
-FAIL=0
 
 #Initialize .bats file
 
@@ -29,26 +24,15 @@ rm -f /tmp/package.txt && touch /tmp/package.txt
 rm -f /tmp/failedlist.txt && touch /tmp/failedlist.txt
 rpm -qa >> /tmp/packge.txt
 
-while IFS=, read -r package; do
+HASHGOLDEN=($(md5sum /tmp/package.txt))
 
-    PACKAGE=$package
+#GENERATE TEST
 
-    echo "@test \"SOFTWARE CHECK - "${PACKAGE}"\" {" >> $OUTPUT_BATS
-    echo "rpm -qa | grep \""${PACKAGE}"\"" >> $OUTPUT_BATS
-    echo "[ \$? -eq 0 ]" >> $OUTPUT_BATS
+    echo "@test \"SOFTWARE CHECK - "${IDOL_NAME}" Package HASH\" {" >> $OUTPUT_BATS
+    echo "rpm -qa >> /tmp/packge.txt" >> $OUTPUT_BATS
+    echo "HASHCHECK=($(md5sum /tmp/package.txt))" >> $OUTPUT_BATS
+    echo "[ $HASHCHECK -eq ${HASHGOLDEN} ]" >> $OUTPUT_BATS
     echo "}" >> $OUTPUT_BATS
     echo " " >> $OUTPUT_BATS
 
-    SUCCESS=$[SUCCESS + 1]
-    PROCESSED=$[PROCESSED + 1]
-
-done < /tmp/package.txt
-
-echo "Number of Packages processed.         "$PROCESSED | tee -a $LOG_OUT;
-echo "Number of BATS Successfully Created.  "$SUCCESS | tee -a $LOG_OUT;
-echo "Number of BATS Failed.                "$FAILED | tee -a $LOG_OUT;
-echo "FAILED BATS:      
-                    "
-while IFS=, read -r FAILEDPACKAGE; do
-	echo "                                      "$FAILEDPACKAGE;
-done < $FAILEDLIST;
+echo "Finished Generating Package Hash Test for "${IDOL_NAME} | tee -a $LOG_OUT;

@@ -46,7 +46,7 @@ done < /tmp/package.txt
 
 echo "Number of Packages processed.         "$PROCESSED | tee -a $LOG_OUT;
 echo "Number of BATS Successfully Created.  "$SUCCESS | tee -a $LOG_OUT;
-echo "Number of BATS Failed.                "$FAILED | tee -a $LOG_OUT;
+echo "Number of BATS Failed.                "$FAIL | tee -a $LOG_OUT;
 echo "FAILED BATS:      
                     "
 while IFS=, read -r FAILEDPACKAGE; do
