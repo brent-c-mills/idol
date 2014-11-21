@@ -4,15 +4,9 @@ clear
 
 ### GLOBAL DECLARATIONS:
 
-#Declaring Variables
-	NOW=$(date +"%m_%d_%Y_%H%M%S")
-	LOCATIONS="Lab01 Lab02 Lab03 Lab04 COLO01"
-	SRVNUM=0
-	SUCCESS=0
-	FAIL=0
-
 #Declaring Directory Locations
 	PWD="`pwd`"
+	BIN_DIR=$PWD/bin
 	LOG_DIR=$PWD/log
 	LOG_OUT=$LOG_DIR/log_$NOW.txt
 	TEST_OUT=$PWD/tests
@@ -24,7 +18,7 @@ clear
 
 #READ INPUT AND OUTPUT HELP IF NEEDED
 
-#Output help if "?" received as $1
+#Output help message
 	{
 	if [ "$1" = "?" ] || [ "$1" = "-?" ] || [ "$1" = "-h" ] || [ "$1" = "help" ] || [ "$1" = "--help" ];
 	then
@@ -33,3 +27,12 @@ clear
 	fi
 	}
 
+#Output list of current golden images
+
+	{
+	if [ "$1" = "-l" ] || [ "$1" = "--list" ];
+	then
+		$BIN_DIR/list_idols.sh $TEST_OUT;
+		exit 0;
+	fi
+	}
