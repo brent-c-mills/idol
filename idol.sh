@@ -8,6 +8,7 @@ clear
 	PWD="`pwd`"
 	NOW=$(date +"%m_%d_%Y_%H%M%S")
 	BIN_DIR=$PWD/bin
+	LIB_DIR=$PWD/lib
 	LOG_DIR=$PWD/log
 	LOG_OUT=$LOG_DIR/log_$NOW.txt
 	TEST_DIR=$PWD/tests
@@ -57,21 +58,20 @@ clear
 
 		if [[ -a /etc/centos-release ]] || [[ -a /etc/redhat-release ]]; then
 			echo "Host OS recognized as CentOS / Redhat." | tee -a $LOG_OUT;
-			$BIN_DIR/idol_create_centos.sh $IDOL_NAME
-			exit 0;
+			OPERATING_SYSTEM="centos";
 
 		elif [[ -a /etc/os-release ]]; then
 			echo "Host OS recognized as Debian / Ubuntu." | tee -a $LOG_OUT;
-			$BIN_DIR/idol_create_ubuntu.sh $IDOL_NAME
-			exit 0;
+			OPERATING_SYSTEM="ubuntu";
 
 		elif [[ "$(uname)" -eq "Darwin" ]]; then
 			echo "Host OS recognized as Apple OS X." | tee -a $LOG_OUT;
-			$BIN_DIR/idol_create_os_x.sh $IDOL_NAME	
-			exit 0;
+			OPERATING_SYSTEM="darwin";
 		else echo "Sorry.  This operating system is not supported at this time." | tee -a $LOG_OUT; exit 5;
 		fi
-
+		
+		$BIN_DIR/idol_create.sh $OPERATING_SYSTEM $IDOL_NAME $LOG_OUT $TEST_DIR
+		exit 0;
 	fi
 	}
 
@@ -80,7 +80,7 @@ clear
 	if [[ "$1" -eq "-t" ]] || [[ "$1" = "test" ]]; then
 		IDOL_NAME=$2;
 		echo "Verifying Idol "${IDOL_NAME}"..." | tee -a $LOG_OUT;
-		if [[ -z ${TEST_DIR}/${IDOL_NAME} ]]; then
+		if [[ -e ${TEST_DIR}/${IDOL_NAME} ]]; then
 			echo "Initiating BATS tests on Idol "${IDOL_NAME}"." | tee -a $LOG_OUT;
 			bats ${TEST_DIR}/${IDOL_NAME}
 			exit 0;
