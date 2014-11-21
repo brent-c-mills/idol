@@ -12,11 +12,6 @@ fi
 
 #READ ARGUMENTS AND ASSIGN VARIABLE NAMES
 
-echo $1
-echo $2
-echo $3
-echo $4
-
 OPERATING_SYSTEM=$1;
 IDOL_NAME=$2;
 BASE_DIR=$3;
@@ -48,5 +43,17 @@ echo "Operating System.  " $OPERATING_SYSTEM >> $IDOL_DIR/README.txt;
 cp -r $LIB_DIR/fixtures $IDOL_DIR/;
 cp -r $LIB_DIR/test_helper.bash $IDOL_DIR/;
 
-#CREATE PACKAGE-REALTED BATS TESTS
+#CREATE BATS TESTS BY CATEGORY
+
+BATS_CATEGORY=( "package" "user" "group" "network" "environment" "hardware" );
+
+for i in "${BATS_CATEGORY[@]}"
+do
+	echo "Generating "$i"-related BATS files for "${IDOL_NAME}"..." | tee -a $LOG_OUT;
+	$BIN_DIR/$i_full_${OPERATING_SYSTEM}.sh;
+	$BIN_DIR/$i_hash_${OPERATING_SYSTEM}.sh;
+	echo "Finished generating "$i"-related BATS files for "${IDOL_NAME}"..." | tee -a $LOG_OUT;
+	echo "";
+
+done
 
