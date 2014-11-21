@@ -50,8 +50,8 @@ BATS_CATEGORY=( "package" "user" "group" "network" "environment" "hardware" );
 for i in "${BATS_CATEGORY[@]}"
 do
 	echo "Generating "$i"-related BATS files for "${IDOL_NAME}"..." | tee -a $LOG_OUT;
-	$BIN_DIR/$i_full_${OPERATING_SYSTEM}.sh;
-	$BIN_DIR/$i_hash_${OPERATING_SYSTEM}.sh;
+	$BIN_DIR/$i_full_${OPERATING_SYSTEM}.sh $BASE_DIR $IDOL_NAME $LOG_OUT;
+	$BIN_DIR/$i_hash_${OPERATING_SYSTEM}.sh $BASE_DIR $IDOL_NAME $LOG_OUT;
 	echo "Finished generating "$i"-related BATS files for "${IDOL_NAME}"..." | tee -a $LOG_OUT;
 	echo "";
 
