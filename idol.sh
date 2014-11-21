@@ -5,14 +5,14 @@ clear
 ### GLOBAL DECLARATIONS:
 
 #Declaring Directory Locations
-	PWD="`pwd`"
+	BASE_DIR="`pwd`"
 	NOW=$(date +"%m_%d_%Y_%H%M%S")
-	BIN_DIR=$PWD/bin
-	LIB_DIR=$PWD/lib
-	LOG_DIR=$PWD/log
+	BIN_DIR=$BASE_DIR/bin
+	LIB_DIR=$BASE_DIR/lib
+	LOG_DIR=$BASE_DIR/log
 	LOG_OUT=$LOG_DIR/log_$NOW.txt
-	TEST_DIR=$PWD/tests
-	MAN_DIR=$PWD/man
+	TEST_DIR=$BASE_DIR/tests
+	MAN_DIR=$BASE_DIR/man
 
 ### END DECLARATIONS
 
@@ -70,7 +70,7 @@ clear
 		else echo "Sorry.  This operating system is not supported at this time." | tee -a $LOG_OUT; exit 5;
 		fi
 		
-		$BIN_DIR/idol_create.sh $OPERATING_SYSTEM $IDOL_NAME $LOG_OUT $TEST_DIR
+		$BIN_DIR/idol_create.sh $OPERATING_SYSTEM $IDOL_NAME $BASE_DIR $LOG_OUT
 		exit 0;
 	fi
 	}
