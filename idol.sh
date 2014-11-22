@@ -1,10 +1,14 @@
 #!/bin/bash
 
+set -e
 clear
 
-### GLOBAL DECLARATIONS:
+#################################
+##    GLOBAL DECLARATIONS:     ##
+#################################
 
-#Declaring Directory Locations
+##--DECLARING DIRECTORY STRUCTURE
+
 	BASE_DIR="`pwd`"
 	NOW=$(date +"%m_%d_%Y_%H%M%S")
 	BIN_DIR=$BASE_DIR/bin
@@ -14,8 +18,28 @@ clear
 	TEST_DIR=$BASE_DIR/tests
 	MAN_DIR=$BASE_DIR/man
 
-### END DECLARATIONS
+##--DECLARING FUNCTIONS
 
+version() {
+	echo "Idol 0.0.1"
+	exit 0;
+}
+
+usage() {
+	version
+	echo "Usage: idol [-h | -l] [-c | -p | -t] [<idol>...]"
+	exit 0;
+}
+
+help() {
+	$MAN_DIR/idol_man.sh;
+	exit 0;
+}
+
+list() {
+	$BIN_DIR/list_idols.sh $TEST_DIR;
+	exit 0;
+}
 
 #VERIFY INPUT
 	{
