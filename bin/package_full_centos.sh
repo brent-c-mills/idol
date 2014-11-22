@@ -24,7 +24,7 @@ initialize_bats() {
 
 generate_package_list() {
     rm -f /tmp/package.txt && touch /tmp/package.txt
-    rpm -qa >> /tmp/packge.txt
+    rpm -qa >> /tmp/package.txt
 }
 
 generate_package_bats() {

@@ -24,7 +24,7 @@ initialize_bats() {
 
 generate_package_list() {
     rm -f /tmp/package.txt && touch /tmp/package.txt
-    ls /Applications/ >> /tmp/packge.txt
+    ls /Applications/ >> /tmp/package.txt
 }
 
 generate_package_bats() {

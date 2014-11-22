@@ -24,7 +24,7 @@ initialize_bats() {
 
 generate_package_list() {
     rm -f /tmp/package.txt && touch /tmp/package.txt
-    dpkg --list | awk '{ print $2 }' >> /tmp/packge.txt
+    dpkg --list | awk '{ print $2 }' >> /tmp/package.txt
 }
 
 generate_package_bats() {
