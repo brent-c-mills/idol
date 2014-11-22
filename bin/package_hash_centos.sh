@@ -9,7 +9,7 @@ TEST_DIR=$BASE_DIR/tests;
 MAN_DIR=$BASE_DIR/man;
 IDOL_DIR=$TEST_DIR/$IDOL_NAME;
 
-OUTPUT_BATS=$IDOL_DIR/package_full.bats
+OUTPUT_BATS=$IDOL_DIR/package_hash.bats
 
 #Initialize .bats file
 
