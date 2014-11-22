@@ -4,6 +4,7 @@ set -e
 
 create_idol_dir() {
 	mkdir $IDOL_DIR;
+	mkdir $IDOL_DIR/hash_bats;
 }
 
 create_idol_readme() {
