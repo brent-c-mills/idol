@@ -3,14 +3,14 @@
 set -e
 
 handoff() {
-    echo "user_hash_darwin.sh has been kicked off by idol_create.sh..." | tee -a $LOG_OUT;
-    echo "user_hash_darwin.sh is initiating user hash BATS creation..." | tee -a $LOG_OUT;
+    echo "user_hash_ubuntu.sh has been kicked off by idol_create.sh..." | tee -a $LOG_OUT;
+    echo "user_hash_ubuntu.sh is initiating network hash BATS creation..." | tee -a $LOG_OUT;
     echo "idol name.................."$IDOL_NAME | tee -a $LOG_OUT;
     echo "" | tee -a $LOG_OUT;
 }
 
 completion() {
-    echo "user_hash_darwin.sh has completed for idol "$IDOL_NAME | tee -a $LOG_OUT;
+    echo "user_hash_ubuntu.sh has completed for idol "$IDOL_NAME | tee -a $LOG_OUT;
     exit 0;
 }
 
@@ -23,17 +23,18 @@ initialize_bats() {
 }
 
 generate_user_hash() {
-    echo "Generating User Golden Hash for "${IDOL_NAME} >> $LOG_OUT;
+    echo "Generating network Golden Hash for "${IDOL_NAME} >> $LOG_OUT;
     rm -f /tmp/user_hash.txt && touch /tmp/user_hash.txt;
 	cat /etc/passwd >> /tmp/user_hash.txt;
-	local hashgolden=($(md5 /tmp/user_hash.txt | awk '{ print $4 }'));
+	local hashgolden=($(md5sum /tmp/user_hash.txt));
 	echo $hashgolden;
 }
 
 generate_user_hash_bats() {
-    echo "@test \"USER CHECK - "${IDOL_NAME}" user HASH\" {" >> $OUTPUT_BATS;
+    echo "Generating network Hash Test for "${IDOL_NAME} >> $LOG_OUT;
+    echo "@test \"NETWORK CHECK - "${IDOL_NAME}" network HASH\" {" >> $OUTPUT_BATS;
     echo "cat /etc/passwd > /tmp/user_hash.txt" >> $OUTPUT_BATS;
-    echo "HASHCHECK=$(md5 /tmp/user_hash.txt | awk '{ print $4 }')" >> $OUTPUT_BATS;
+    echo "HASHCHECK=($(md5sum /tmp/user_hash.txt))" >> $OUTPUT_BATS;
     echo "[ $HASHCHECK -eq ${HASHGOLDEN} ]" >> $OUTPUT_BATS;
     echo "}" >> $OUTPUT_BATS;
     echo " " >> $OUTPUT_BATS;
@@ -49,7 +50,7 @@ OUTPUT_BATS=$HASH_BATS/user_full.bats;
 #Acknowledge handoff...
 handoff;
 
-#Initialize bats and generate user list / user bats.
+#Initialize bats and generate network list / network bats.
 initialize_bats;
 HASHGOLDEN=$(generate_user_hash);
 generate_user_hash_bats;

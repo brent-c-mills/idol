@@ -24,17 +24,17 @@ initialize_bats() {
 
 generate_package_hash() {
     echo "Generating Package Golden Hash for "${IDOL_NAME} >> $LOG_OUT;
-    rm -f /tmp/package.txt && touch /tmp/package.txt;
-	dpkg --list | awk '{ print $2 }' >> /tmp/package.txt;
-	local hashgolden=($(md5sum /tmp/package.txt));
+    rm -f /tmp/package_hash.txt && touch /tmp/package_hash.txt;
+	dpkg --list | awk '{ print $2 }' >> /tmp/package_hash.txt;
+	local hashgolden=($(md5sum /tmp/package_hash.txt));
 	echo $hashgolden;
 }
 
 generate_package_hash_bats() {
     echo "Generating Package Hash Test for "${IDOL_NAME} >> $LOG_OUT;
     echo "@test \"SOFTWARE CHECK - "${IDOL_NAME}" Package HASH\" {" >> $OUTPUT_BATS;
-    echo "dpkg --list | awk '{ print $2 }' > /tmp/package.txt" >> $OUTPUT_BATS;
-    echo "HASHCHECK=($(md5sum /tmp/package.txt))" >> $OUTPUT_BATS;
+    echo "dpkg --list | awk '{ print $2 }' > /tmp/package_hash.txt" >> $OUTPUT_BATS;
+    echo "HASHCHECK=($(md5sum /tmp/package_hash.txt))" >> $OUTPUT_BATS;
     echo "[ $HASHCHECK -eq ${HASHGOLDEN} ]" >> $OUTPUT_BATS;
     echo "}" >> $OUTPUT_BATS;
     echo " " >> $OUTPUT_BATS;

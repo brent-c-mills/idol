@@ -23,18 +23,18 @@ initialize_bats() {
 }
 
 generate_user_hash() {
-    echo "Generating user Golden Hash for "${IDOL_NAME} >> $LOG_OUT;
-    rm -f /tmp/user.txt && touch /tmp/user.txt;
-	cat /etc/passwd >> /tmp/user.txt;
-	local hashgolden=($(md5sum /tmp/user.txt));
+    echo "Generating User Golden Hash for "${IDOL_NAME} >> $LOG_OUT;
+    rm -f /tmp/user_hash.txt && touch /tmp/user_hash.txt;
+	cat /etc/passwd >> /tmp/user_hash.txt;
+	local hashgolden=($(md5sum /tmp/user_hash.txt));
 	echo $hashgolden;
 }
 
 generate_user_hash_bats() {
     echo "Generating user Hash Test for "${IDOL_NAME} >> $LOG_OUT;
-    echo "@test \"SOFTWARE CHECK - "${IDOL_NAME}" user HASH\" {" >> $OUTPUT_BATS;
-    echo "cat /etc/passwd > /tmp/user.txt" >> $OUTPUT_BATS;
-    echo "HASHCHECK=($(md5sum /tmp/user.txt))" >> $OUTPUT_BATS;
+    echo "@test \"USER CHECK - "${IDOL_NAME}" user HASH\" {" >> $OUTPUT_BATS;
+    echo "cat /etc/passwd > /tmp/user_hash.txt" >> $OUTPUT_BATS;
+    echo "HASHCHECK=($(md5sum /tmp/user_hash.txt))" >> $OUTPUT_BATS;
     echo "[ $HASHCHECK -eq ${HASHGOLDEN} ]" >> $OUTPUT_BATS;
     echo "}" >> $OUTPUT_BATS;
     echo " " >> $OUTPUT_BATS;

@@ -23,8 +23,9 @@ initialize_bats() {
 }
 
 generate_group_list() {
-    rm -f /tmp/group.txt && touch /tmp/group.txt;
-    cat /etc/group >> /tmp/group.txt;
+    echo "Generating group Golden List for "${IDOL_NAME} >> $LOG_OUT;
+    rm -f /tmp/group_full.txt && touch /tmp/group_full.txt;
+    cat /etc/group >> /tmp/group_full.txt;
 }
 
 generate_group_bats() {
@@ -34,13 +35,13 @@ generate_group_bats() {
         group=$group;
 
         echo "Adding group_full test for "${groupname} >> $LOG_OUT;
-        echo "@test \"group CHECK - "${groupname}"\" {" >> $OUTPUT_BATS;
+        echo "@test \"GROUP CHECK - "${groupname}"\" {" >> $OUTPUT_BATS;
         echo "cat /etc/group | grep \""${group}"\"" >> $OUTPUT_BATS;
         echo "[ \$? -eq 0 ]" >> $OUTPUT_BATS;
         echo "}" >> $OUTPUT_BATS;
         echo " " >> $OUTPUT_BATS;
 
-    done < /tmp/group.txt;
+    done < /tmp/group_full.txt;
 }
 
 

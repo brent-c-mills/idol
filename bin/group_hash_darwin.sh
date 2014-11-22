@@ -23,16 +23,17 @@ initialize_bats() {
 }
 
 generate_group_hash() {
-    rm -f /tmp/group.txt && touch /tmp/group.txt;
-	cat /etc/group >> /tmp/group.txt;
-	local hashgolden=($(md5 /tmp/group.txt | awk '{ print $4 }'));
+    echo "Generating group Golden Hash for "${IDOL_NAME} >> $LOG_OUT;
+    rm -f /tmp/group_hash.txt && touch /tmp/group_hash.txt;
+	cat /etc/group >> /tmp/group_hash.txt;
+	local hashgolden=($(md5 /tmp/group_hash.txt | awk '{ print $4 }'));
 	echo $hashgolden;
 }
 
 generate_group_hash_bats() {
-    echo "@test \"SOFTWARE CHECK - "${IDOL_NAME}" group HASH\" {" >> $OUTPUT_BATS;
-    echo "cat /etc/group > /tmp/group.txt" >> $OUTPUT_BATS;
-    echo "HASHCHECK=$(md5 /tmp/group.txt | awk '{ print $4 }')" >> $OUTPUT_BATS;
+    echo "@test \"GROUP CHECK - "${IDOL_NAME}" group HASH\" {" >> $OUTPUT_BATS;
+    echo "cat /etc/group > /tmp/group_hash.txt" >> $OUTPUT_BATS;
+    echo "HASHCHECK=$(md5 /tmp/group_hash.txt | awk '{ print $4 }')" >> $OUTPUT_BATS;
     echo "[ $HASHCHECK -eq ${HASHGOLDEN} ]" >> $OUTPUT_BATS;
     echo "}" >> $OUTPUT_BATS;
     echo " " >> $OUTPUT_BATS;

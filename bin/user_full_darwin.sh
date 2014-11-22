@@ -23,8 +23,9 @@ initialize_bats() {
 }
 
 generate_user_list() {
-    rm -f /tmp/user.txt && touch /tmp/user.txt;
-    cat /etc/passwd >> /tmp/user.txt;
+    echo "Generating User Golden List for "${IDOL_NAME} >> $LOG_OUT;
+    rm -f /tmp/user_full.txt && touch /tmp/user_full.txt;
+    cat /etc/passwd >> /tmp/user_full.txt;
 }
 
 generate_user_bats() {
@@ -34,13 +35,13 @@ generate_user_bats() {
         user=$user;
 
         echo "Adding user_full test for "${user} >> $LOG_OUT;
-        echo "@test \"SOFTWARE CHECK - "${user}"\" {" >> $OUTPUT_BATS;
+        echo "@test \"USER CHECK - "${user}"\" {" >> $OUTPUT_BATS;
         echo "cat /etc/passwd | grep \""${user}"\"" >> $OUTPUT_BATS;
         echo "[ \$? -eq 0 ]" >> $OUTPUT_BATS;
         echo "}" >> $OUTPUT_BATS;
         echo " " >> $OUTPUT_BATS;
 
-    done < /tmp/user.txt;
+    done < /tmp/user_full.txt;
 }
 
 

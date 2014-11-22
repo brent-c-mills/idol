@@ -23,8 +23,8 @@ initialize_bats() {
 }
 
 generate_package_list() {
-    rm -f /tmp/package.txt && touch /tmp/package.txt
-    ls /Applications/ >> /tmp/package.txt
+    rm -f /tmp/package_full.txt && touch /tmp/package_full.txt
+    ls /Applications/ >> /tmp/package_full.txt
 }
 
 generate_package_bats() {
@@ -39,7 +39,7 @@ generate_package_bats() {
         echo "}" >> $OUTPUT_BATS
         echo " " >> $OUTPUT_BATS
 
-    done < /tmp/package.txt
+    done < /tmp/package_full.txt
 }
 
 
