@@ -29,7 +29,7 @@ HASHGOLDEN=($(md5sum /tmp/package.txt))
 #GENERATE TEST
 
     echo "@test \"SOFTWARE CHECK - "${IDOL_NAME}" Package HASH\" {" >> $OUTPUT_BATS
-    echo "rpm -qa >> /tmp/packge.txt" >> $OUTPUT_BATS
+    echo "rpm -qa > /tmp/packge.txt" >> $OUTPUT_BATS
     echo "HASHCHECK=($(md5sum /tmp/package.txt))" >> $OUTPUT_BATS
     echo "[ $HASHCHECK -eq ${HASHGOLDEN} ]" >> $OUTPUT_BATS
     echo "}" >> $OUTPUT_BATS
