@@ -4,7 +4,7 @@ set -e
 clear
 
 #################################
-##    GLOBAL DECLARATIONS:     ##
+##        DECLARATIONS:        ##
 #################################
 
 ##--DECLARING DIRECTORY STRUCTURE
@@ -54,11 +54,6 @@ fingerprint() {
 }
 
 create_idol() {
-	echo $OPERATING_SYSTEM
-	echo $IDOL_NAME
-	echo $BASE_DIR
-	echo $LOG_OUT
-
 	$BIN_DIR/idol_create.sh $OPERATING_SYSTEM $IDOL_NAME $BASE_DIR $LOG_OUT
 }
 
@@ -78,7 +73,7 @@ package_idol() {
 }
 
 #################################
-##   END GLOBAL DECLARATIONS:  ##
+##       END DECLARATIONS:     ##
 #################################
 
 
