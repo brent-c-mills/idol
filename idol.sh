@@ -26,7 +26,7 @@ version() {
 
 usage() {
 	version
-	echo "Usage: idol [-h | -l] [-c | -p | -t] [<idol>...]"
+	echo "Usage: idol [-hlpv] [-c name] [-t name] [--longoption ...]"
 }
 
 help() {
@@ -140,6 +140,11 @@ for option in "${options[@]}"; do
 	    ;;
 	esac
 done
+
+if [ "${#arguments[@]}" -eq 0 ]; then
+  usage >&2
+  exit 1
+fi
 
 #################################
 ##     END ACCEPT INPUT:       ##
