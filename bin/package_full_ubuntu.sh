@@ -1,5 +1,47 @@
 #!/bin/bash
 
+set -e
+
+handoff() {
+    echo "package_full_centos.sh has been kicked off by idol_create.sh..." | tee -a $LOG_OUT;
+    echo "package_full_centos.sh is initiating full package BATS creation..." | tee -a $LOG_OUT;
+    echo "idol name.................."$IDOL_NAME | tee -a $LOG_OUT;
+    echo "Packages to be processed..."$(dpkg --list | awk '{ print $2 }' | wc -l) | tee -a $LOG_OUT;
+    echo "" | tee -a $LOG_OUT;
+}
+
+completion() {
+    echo "package_full_centos.sh has completed for idol "$IDOL_NAME | tee -a $LOG_OUT;
+}
+
+initialize_bats() {
+    echo "#!/usr/bin/env bats" >> $OUTPUT_BATS
+    echo "" >> $OUTPUT_BATS
+    echo "load test_helper" >> $OUTPUT_BATS
+    echo "fixtures bats" >> $OUTPUT_BATS
+    echo "" >> $OUTPUT_BATS
+}
+
+generate_package_list() {
+    rm -f /tmp/package.txt && touch /tmp/package.txt
+    dpkg --list | awk '{ print $2 }' >> /tmp/packge.txt
+}
+
+generate_package_bats() {
+    while IFS=, read -r package; do
+
+        PACKAGE=$package
+
+        echo "@test \"SOFTWARE CHECK - "${PACKAGE}"\" {" >> $OUTPUT_BATS
+        echo "dpkg --list | awk '{ print $2 }' | grep \""${PACKAGE}"\"" >> $OUTPUT_BATS
+        echo "[ \$? -eq 0 ]" >> $OUTPUT_BATS
+        echo "}" >> $OUTPUT_BATS
+        echo " " >> $OUTPUT_BATS
+
+    done < /tmp/package.txt
+}
+
+
 BASE_DIR=$1;
 IDOL_NAME=$2;
 LOG_OUT=$3;
@@ -10,45 +52,14 @@ MAN_DIR=$BASE_DIR/man;
 IDOL_DIR=$TEST_DIR/$IDOL_NAME;
 
 OUTPUT_BATS=$IDOL_DIR/package_full.bats
-FAILEDLIST=/tmp/failedlist.txt
 
-PROCESSED=0
-SUCCESS=0
-FAIL=0
+#Acknowledge handoff...
+handoff
 
-#Initialize .bats file
+#Initialize bats and generate package list / package bats.
+initialize_bats
+generate_package_list
+generate_package_bats
 
-echo "#!/usr/bin/env bats" >> $OUTPUT_BATS
-echo "" >> $OUTPUT_BATS
-echo "load test_helper" >> $OUTPUT_BATS
-echo "fixtures bats" >> $OUTPUT_BATS
-echo "" >> $OUTPUT_BATS
-
-#Generating Initial Package List
-rm -f /tmp/package.txt && touch /tmp/package.txt
-rm -f /tmp/failedlist.txt && touch /tmp/failedlist.txt
-dpkg --list | awk '{ print $2 }' >> /tmp/packge.txt
-
-while IFS=, read -r package; do
-
-    PACKAGE=$package
-
-    echo "@test \"SOFTWARE CHECK - "${PACKAGE}"\" {" >> $OUTPUT_BATS
-    echo "dpkg --list | awk '{ print $2 }' | grep \""${PACKAGE}"\"" >> $OUTPUT_BATS
-    echo "[ \$? -eq 0 ]" >> $OUTPUT_BATS
-    echo "}" >> $OUTPUT_BATS
-    echo " " >> $OUTPUT_BATS
-
-    SUCCESS=$[SUCCESS + 1]
-    PROCESSED=$[PROCESSED + 1]
-
-done < /tmp/package.txt
-
-echo "Number of Packages processed.         "$PROCESSED | tee -a $LOG_OUT;
-echo "Number of BATS Successfully Created.  "$SUCCESS | tee -a $LOG_OUT;
-echo "Number of BATS Failed.                "$FAIL | tee -a $LOG_OUT;
-echo "FAILED BATS:      
-                    "
-while IFS=, read -r FAILEDPACKAGE; do
-    echo "                                      "$FAILEDPACKAGE;
-done < $FAILEDLIST;
+#Acknowledge completion of BATS generation.
+completion

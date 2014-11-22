@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 create_idol_dir() {
 	mkdir $IDOL_DIR;
 }
