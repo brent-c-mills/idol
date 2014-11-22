@@ -3,15 +3,15 @@
 set -e
 
 handoff() {
-    echo "package_full_centos.sh has been kicked off by idol_create.sh..." | tee -a $LOG_OUT;
-    echo "package_full_centos.sh is initiating full package BATS creation..." | tee -a $LOG_OUT;
+    echo "package_full_ubuntu.sh has been kicked off by idol_create.sh..." | tee -a $LOG_OUT;
+    echo "package_full_ubuntu.sh is initiating full package BATS creation..." | tee -a $LOG_OUT;
     echo "idol name.................."$IDOL_NAME | tee -a $LOG_OUT;
     echo "Packages to be processed..."$(dpkg --list | awk '{ print $2 }' | wc -l) | tee -a $LOG_OUT;
     echo "" | tee -a $LOG_OUT;
 }
 
 completion() {
-    echo "package_full_centos.sh has completed for idol "$IDOL_NAME | tee -a $LOG_OUT;
+    echo "package_full_ubuntu.sh has completed for idol "$IDOL_NAME | tee -a $LOG_OUT;
 }
 
 initialize_bats() {
