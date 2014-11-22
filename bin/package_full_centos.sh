@@ -32,6 +32,7 @@ generate_package_bats() {
 
         PACKAGE=$package
 
+        echo "Adding package_full test for "${PACKAGE} >> $LOG_OUT;
         echo "@test \"SOFTWARE CHECK - "${PACKAGE}"\" {" >> $OUTPUT_BATS
         echo "rpm -qa | grep \""${PACKAGE}"\"" >> $OUTPUT_BATS
         echo "[ \$? -eq 0 ]" >> $OUTPUT_BATS
@@ -42,16 +43,11 @@ generate_package_bats() {
 }
 
 
-BASE_DIR=$1;
+FULL_BATS=$1;
 IDOL_NAME=$2;
 LOG_OUT=$3;
-BIN_DIR=$BASE_DIR/bin;
-LIB_DIR=$BASE_DIR/lib;
-TEST_DIR=$BASE_DIR/tests;
-MAN_DIR=$BASE_DIR/man;
-IDOL_DIR=$TEST_DIR/$IDOL_NAME;
 
-OUTPUT_BATS=$IDOL_DIR/package_full.bats
+OUTPUT_BATS=$FULL_BATS/package_full.bats
 
 #Acknowledge handoff...
 handoff

@@ -4,7 +4,8 @@ set -e
 
 create_idol_dir() {
 	mkdir $IDOL_DIR;
-	mkdir $IDOL_DIR/hash_bats;
+	mkdir $FULL_BATS;
+	mkdir $HASH_BATS;
 }
 
 create_idol_readme() {
@@ -27,8 +28,8 @@ create_bats_tests(){
 	for i in "${BATS_CATEGORY[@]}"
 	do
 		echo "Generating "$i"-related BATS files for "${IDOL_NAME}"..." | tee -a $LOG_OUT;
-		$BIN_DIR/${i}_full_${OPERATING_SYSTEM}.sh $BASE_DIR $IDOL_NAME $LOG_OUT;
-		$BIN_DIR/${i}_hash_${OPERATING_SYSTEM}.sh $BASE_DIR $IDOL_NAME $LOG_OUT;
+		$BIN_DIR/${i}_full_${OPERATING_SYSTEM}.sh $FULL_BATS $IDOL_NAME $LOG_OUT;
+		$BIN_DIR/${i}_hash_${OPERATING_SYSTEM}.sh $HASH_BATS $IDOL_NAME $LOG_OUT;
 		echo "Finished generating "$i"-related BATS files for "${IDOL_NAME}"..." | tee -a $LOG_OUT;
 		echo "";
 
@@ -62,6 +63,8 @@ LIB_DIR=$BASE_DIR/lib;
 TEST_DIR=$BASE_DIR/tests;
 MAN_DIR=$BASE_DIR/man;
 IDOL_DIR=$TEST_DIR/$IDOL_NAME;
+FULL_BATS=$IDOL_DIR/full_bats;
+HASH_BATS=$IDOL_DIR/hash_bats;
 
 
 #################################
