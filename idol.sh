@@ -22,100 +22,125 @@ clear
 
 version() {
 	echo "Idol 0.0.1"
-	exit 0;
 }
 
 usage() {
 	version
 	echo "Usage: idol [-h | -l] [-c | -p | -t] [<idol>...]"
-	exit 0;
 }
 
 help() {
 	$MAN_DIR/idol_man.sh;
-	exit 0;
 }
 
-list() {
+list_idol() {
 	$BIN_DIR/list_idols.sh $TEST_DIR;
-	exit 0;
 }
 
-#VERIFY INPUT
-	{
-	if [[ -z "$1" ]]; then
-		echo "No argument supplied.  Run idol.sh -h for help and usage." | tee -a $LOG_OUT;
-		exit 1;
+fingerprint() {
+	if [[ -a /etc/centos-release ]] || [[ -a /etc/redhat-release ]]; then
+		echo "Host OS recognized as CentOS / Redhat." | tee -a $LOG_OUT;
+		OPERATING_SYSTEM="centos";
+
+	elif [[ -a /etc/os-release ]]; then
+		echo "Host OS recognized as Debian / Ubuntu." | tee -a $LOG_OUT;
+		OPERATING_SYSTEM="ubuntu";
+
+	elif [[ "$(uname)" -eq "Darwin" ]]; then
+		echo "Host OS recognized as Apple OS X." | tee -a $LOG_OUT;
+		OPERATING_SYSTEM="darwin";
+	else echo "Sorry.  This operating system is not supported at this time." | tee -a $LOG_OUT; exit 5;
 	fi
-	}
+}
 
-	{
-	if [[ "$1" -ne "-h" ]] && [[ "$1" -ne "--help" ]] && [[ "$1" -ne "-c" ]] && [[ "$1" -ne "--create" ]] && [[ "$1" -ne "-l" ]] && [[ "$1" -ne "--list" ]] && [[ "$1" -ne "-p" ]] && [[ "$1" -ne "--package" ]] && [[ "$1" -ne "-t" ]] && [[ "$1" -ne "--test" ]]; then
-		echo "Invalid input.  Run idol.sh -h for help and usage." | tee -a $LOG_OUT;
-		exit 2;
-	fi
-	}
+create_idol() {
+	echo $OPERATING_SYSTEM
+	echo $IDOL_NAME
+	echo $BASE_DIR
+	echo $LOG_OUT
 
-#READ INPUT AND OUTPUT HELP IF NEEDED
+	$BIN_DIR/idol_create.sh $OPERATING_SYSTEM $IDOL_NAME $BASE_DIR $LOG_OUT
+}
 
-#Output help message
-	{
-	if [[ "$1" = "-h" ]] || [[ "$1" = "help" ]] ; then
-		$MAN_DIR/idol_man.sh;
+test_idol() {
+	echo "Verifying Idol "${IDOL_NAME}"..." | tee -a $LOG_OUT;
+	if [[ -e ${TEST_DIR}/${IDOL_NAME} ]]; then
+		echo "Initiating BATS tests on Idol "${IDOL_NAME}"." | tee -a $LOG_OUT;
+		bats ${TEST_DIR}/${IDOL_NAME}
 		exit 0;
+	else
+		echo "Idol "${IDOL_NAME}" not found." | tee -a $LOG_OUT; exit 6;
 	fi
-	}
+}
 
-#Output list of current golden images
+package_idol() {
+	echo "PACKAGE FUNCTION COMING IN A FUTURE RELEASE..."
+}
 
-	{
-	if [[ "$1" = "-l" ]] || [[ "$1" = "list" ]]; then
-		$BIN_DIR/list_idols.sh $TEST_DIR;
+#################################
+##   END GLOBAL DECLARATIONS:  ##
+#################################
+
+
+#################################
+##        ACCEPT INPUT:        ##
+#################################
+
+options=()
+arguments=()
+for arg in "$@"; do
+  if [ "${arg:0:1}" = "-" ]; then
+    if [ "${arg:1:1}" = "-" ]; then
+      options[${#options[*]}]="${arg:2}"
+    else
+      index=1
+      while option="${arg:$index:1}"; do
+        [ -n "$option" ] || break
+        options[${#options[*]}]="$option"
+        let index+=1
+      done
+    fi
+  else
+    arguments[${#arguments[*]}]="$arg"
+  fi
+done
+
+for option in "${options[@]}"; do
+	case "$option" in
+	"c" | "create" )
+	    IDOL_NAME=$2;
+		fingerprint
+		create_idol
 		exit 0;
-	fi
-	}
-
-#CREATE NEW IDOL
-	{
-	if [[ "$1" = "-c" ]] || [[ "$1" = "create" ]]; then
-		IDOL_NAME=$2;
-
-		if [[ -a /etc/centos-release ]] || [[ -a /etc/redhat-release ]]; then
-			echo "Host OS recognized as CentOS / Redhat." | tee -a $LOG_OUT;
-			OPERATING_SYSTEM="centos";
-
-		elif [[ -a /etc/os-release ]]; then
-			echo "Host OS recognized as Debian / Ubuntu." | tee -a $LOG_OUT;
-			OPERATING_SYSTEM="ubuntu";
-
-		elif [[ "$(uname)" -eq "Darwin" ]]; then
-			echo "Host OS recognized as Apple OS X." | tee -a $LOG_OUT;
-			OPERATING_SYSTEM="darwin";
-		else echo "Sorry.  This operating system is not supported at this time." | tee -a $LOG_OUT; exit 5;
-		fi
-		
-		$BIN_DIR/idol_create.sh $OPERATING_SYSTEM $IDOL_NAME $BASE_DIR $LOG_OUT
+	    ;;
+	"h" | "help" )
+	    help
+	    exit 0
+	    ;;
+    "l" | "list" )
+		list_idol
 		exit 0;
-	fi
-	}
+		;;
+	"p" | "package" )
+	    package_idol
+		exit 0;
+	    ;;
+	"t" | "test" )
+    	IDOL_NAME=$2;
+		test_idol
+		exit 0;
+    	;;
+	"v" | "version" )
+	    version
+	    exit 0
+	    ;;
+	* )
+	    usage >&2
+	    exit 1
+	    ;;
+	esac
+done
 
-#TEST EXISTING IDOL
-	{
-	if [[ "$1" -eq "-t" ]] || [[ "$1" = "test" ]]; then
-		IDOL_NAME=$2;
-		echo "Verifying Idol "${IDOL_NAME}"..." | tee -a $LOG_OUT;
-		if [[ -e ${TEST_DIR}/${IDOL_NAME} ]]; then
-			echo "Initiating BATS tests on Idol "${IDOL_NAME}"." | tee -a $LOG_OUT;
-			bats ${TEST_DIR}/${IDOL_NAME}
-			exit 0;
-		else
-			echo "Idol "${IDOL_NAME}" not found." | tee -a $LOG_OUT; exit 6;
-		fi
-	fi	
-	}
-
-#PACKAGE IDOL INSTANCE FOR REMOTE USE
-	{
-	if [[ "$1" -eq "-p" ]] || [[ "$1" -eq "package" ]]
-		echo "PACKAGE FUNCTION COMING IN A FUTURE RELEASE..."
-	}
+#################################
+##     END ACCEPT INPUT:       ##
+#################################
