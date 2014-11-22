@@ -34,7 +34,7 @@ help() {
 }
 
 list_idol() {
-	$BIN_DIR/list_idols.sh $TEST_DIR;
+	$BIN_DIR/idol_list.sh $TEST_DIR;
 }
 
 fingerprint() {
