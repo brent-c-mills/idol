@@ -6,6 +6,10 @@ clear;
 INSTALL_LOG="/tmp/idol_tmp_log.log";
 touch $INSTALL_LOG;
 
+#################################
+##         FUNCTIONS!:         ##
+#################################
+
 cancel_install() {
 	echo "Cancelling installation." | tee -a $INSTALL_LOG;
 	echo "For help, please contact brent.c.mills@gmail.com.";
@@ -73,7 +77,32 @@ install_bats() {
 }
 
 locate_bats() {
+	read -e -p "Please point us to the base BATS directory (ie: \"/opt/bats\"): " REPLY;
+	echo "";
 
+	#Read the user's selected installation path.
+	if [[ -z $REPLY ]];
+	then
+	    BATS_PATH="/opt/bats";
+	    echo "BATS will be installed in "$BATS_PATH | tee -a $INSTALL_LOG;
+	    exit 0;
+	else
+	    echo "No directory specified." | tee -a $INSTALL_LOG;
+	    cancel_install;
+	fi
+
+	if [[ -e ${BATS_PATH}/bin/bats ]]; then
+        echo "BATS installation found..." | tee -a $INSTALL_LOG;
+        echo "Adding BATS to \$PATH..." | tee -a $INSTALL_LOG;
+
+        #Adding $BATS_PATH/bin/bats to the $PATH.
+        echo "export PATH="${BATS_PATH}/bin/bats:${PATH} >> ~/.bash_profile;
+		source ~/.bash_profile;
+
+	else
+		echo "Unable to locate the BATS executable at "${BATS_PATH}"/bin/bats." | tee -a $INSTALL_LOG;
+		cancel_install;
+	fi
 }
 
 
@@ -104,7 +133,8 @@ if [[ $? -eq 1 ]]; then
 		    install_bats;
 		    ;;
 		"2" )
-		    echo "BATS EXISTS.  Need to find that sucker...";
+		    echo "Time to follow the guano!";
+		    locate_bats;
 		    ;;
 	    "3" )
 			cancel_install;
