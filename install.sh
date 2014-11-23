@@ -3,7 +3,8 @@
 set -e;
 clear;
 
-INSTALL_LOG="/tmp/idol_tmp_log.log";
+INSTALL_LOG="/tmp/idol_install.log";
+rm $INSTALL_LOG;
 touch $INSTALL_LOG;
 
 #################################
@@ -13,6 +14,7 @@ touch $INSTALL_LOG;
 cancel_install() {
 	echo "Cancelling installation." | tee -a $INSTALL_LOG;
 	echo "For help, please contact brent.c.mills@gmail.com.";
+	mv $INSTALL_LOG BASE_DIR/log/install.log;
 	exit 1;
 }
 
@@ -152,7 +154,20 @@ fi
 ##  CHECK IDOL FILESTRUCTURE:  ##
 #################################
 
-echo "BATS test for this installation isn't complete yet (Ironic, right?)."
+echo "Checking for idol directory structure .bats file..." | tee -a $INSTALL_LOG;
+if [[ ! -e ${BASE_DIR}/lib/idol.bats ]]; then
+	echo "Idol directory structure .bats file could not be found." | tee -a $INSTALL_LOG;
+	cancel_install;
+fi
+
+echo "Executing BATS test against idol directory structure..." | tee -a $INSTALL_LOG;
+echo "" | tee -a $INSTALL_LOG;
+bats $BASE_DIR/lib/idol.bats | tee -a $INSTALL_LOG; 
+
+if (grep "not ok" ${INSTALL_LOG} >> /dev/null); then
+        echo "Idol directory structure is not intact.  See ./log/install.log for more information.";
+        cancel_install;
+fi
 
 #################################
 ##   EDIT BASE_DIR IN IDOL:    ##
@@ -168,3 +183,12 @@ sed -i -e 's/PLACEHOLD_BASE_DIRECTORY/'$BASE_DIR'/g' ./bin/idol;
 #Add the idol script to the $PATH.
 echo "export PATH="${BASE_DIR}/bin/idol:${PATH} >> ~/.bash_profile;
 source ~/.bash_profile;
+
+
+#################################
+##          COMPLETION         ##
+#################################
+
+echo "Installation completed successfully." | tee -a $INSTALL_LOG;
+mv $INSTALL_LOG $BASE_DIR/log/install.log;
+exit 0;
