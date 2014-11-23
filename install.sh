@@ -68,7 +68,7 @@ install_bats() {
 	source ~/.bash_profile;
 
 	#Run BATS installation script.
-	$BATS_PATH/install.sh;
+	$BATS_PATH/install.sh /usr/local/bin/bats;
 	#Verify that BATS was installed successfully.
 	if [[ $? -ne 0 ]]; then
     	echo "BATS installation failed..." | tee -a $INSTALL_LOG;
@@ -117,8 +117,7 @@ BASE_DIR="`pwd`";
 #################################
 ##       CHECK FOR BATS:       ##
 #################################
-bats
-if [[ $? -eq 1 ]]; then
+if [[ ! -e /usr/local/bin/bats ]]; then
 	echo "";
 	echo "A BATS install could not be found...";
 	echo "What would you like to do?";
