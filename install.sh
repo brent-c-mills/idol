@@ -105,7 +105,6 @@ locate_bats() {
 	fi
 }
 
-
 #################################
 ##    FIND BASE DIRECTORY:     ##
 #################################
@@ -118,11 +117,14 @@ BASE_DIR="`pwd`";
 #################################
 bats
 if [[ $? -eq 1 ]]; then
+	echo "";
 	echo "A BATS install could not be found...";
 	echo "What would you like to do?";
+	echo "";
 	echo "1) Install a new copy of BATS 0.4.0";
 	echo "2) Provide the install location of a current copy of BATS";
 	echo "3) Cancel Installation"
+	echo "";
 
 	read -p "Please select an option... " -n 1 -r;
 	echo "";
@@ -144,19 +146,25 @@ if [[ $? -eq 1 ]]; then
 		    cancel_install;
 		    ;;
 	esac
-
 fi
 
 #################################
 ##  CHECK IDOL FILESTRUCTURE:  ##
 #################################
 
+echo "BATS test for this installation isn't complete yet (Ironic, right?)."
 
 #################################
 ##   EDIT BASE_DIR IN IDOL:    ##
 #################################
+
+#Modify the BASE_DIR variable in the idol script.  This allows idol to determine the appropriate path to all associated scripts.
 sed -i -e 's/PLACEHOLD_BASE_DIRECTORY/'$BASE_DIR'/g' ./bin/idol;
 
 #################################
 ##          EDIT PATH:         ##
 #################################
+
+#Add the idol script to the $PATH.
+echo "export PATH="${BASE_DIR}/bin/idol:${PATH} >> ~/.bash_profile;
+source ~/.bash_profile;

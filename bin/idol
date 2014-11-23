@@ -9,8 +9,7 @@ clear
 
 ##--DECLARING DIRECTORY STRUCTURE
 
-	BASE_DIR="`pwd`"
-#NOTE:  This file will eventually move to the bin directory.  The future installation script will set the true BASE_DIR and will adjust the tree based around it.
+	BASE_DIR="PLACEHOLD_BASE_DIRECTORY"
 
 	NOW=$(date +"%m_%d_%Y_%H%M%S")
 	BIN_DIR=$BASE_DIR/bin
