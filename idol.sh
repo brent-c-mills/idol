@@ -16,7 +16,7 @@ clear
 	BIN_DIR=$BASE_DIR/bin
 	LIB_DIR=$BASE_DIR/lib
 	LOG_DIR=$BASE_DIR/log
-	LOG_OUT=$LOG_DIR/log_$NOW.txt
+	LOG_OUT=$LOG_DIR/log_$NOW.log
 	TEST_DIR=$BASE_DIR/tests
 	MAN_DIR=$BASE_DIR/man
 
