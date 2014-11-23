@@ -14,7 +14,7 @@ touch $INSTALL_LOG;
 cancel_install() {
 	echo "Cancelling installation." | tee -a $INSTALL_LOG;
 	echo "For help, please contact brent.c.mills@gmail.com.";
-	mv $INSTALL_LOG BASE_DIR/log/install.log;
+	mv $INSTALL_LOG $BASE_DIR/log/install.log;
 	exit 1;
 }
 
@@ -26,19 +26,17 @@ install_bats() {
 	fi
 
 	#Prompt user to input a new installation path for BATS (Default is /opt/bats)
-	read -e -p "Please specify an input directory for BATS. [/opt/bats] " REPLY;
+	read -e -p "Please specify an input directory for BATS. [~/bats] " REPLY;
 	echo "";
 
 	#Read the user's selected installation path.
 	if [[ -z $REPLY ]];
 	then
-	    BATS_PATH="/opt/bats";
+	    BATS_PATH="${`HOME`}/bats";
 	    echo "BATS will be installed in "$BATS_PATH | tee -a $INSTALL_LOG;
-	    exit 0;
 	else
 		eval BATS_PATH=$REPLY;
 	    echo "BATS will be installed in "$BATS_PATH | tee -a $INSTALL_LOG;
-	    exit 0;
 	fi
 
 	#Check if specified installation path already exists.  Exit installation if it does.
@@ -48,6 +46,7 @@ install_bats() {
 	fi
 
 	#Create BATS installation directory.
+	echo "Creating BATS installation directory." | tee -a $INSTALL_LOG
 	mkdir $BATS_PATH;
 	#Verify that BATS installation directory was created successfully.
 	if [[ $? -ne 0 ]]; then
@@ -64,8 +63,9 @@ install_bats() {
 	fi
 
 	#Export bats to $PATH
-	echo "export PATH="${BATS_PATH}/bin/bats:${PATH} >> ~/.bash_profile;
+	echo "export PATH="${BATS_PATH}/bin:"\$PATH" >> ~/.bash_profile;
 	source ~/.bash_profile;
+	. ~/.bash_profile;	
 
 	#Run BATS installation script.
 	$BATS_PATH/install.sh /usr/local/bin/bats;
