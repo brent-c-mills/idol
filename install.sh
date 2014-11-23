@@ -4,7 +4,7 @@ set -e;
 clear;
 
 INSTALL_LOG="/tmp/idol_install.log";
-rm $INSTALL_LOG;
+rm -f $INSTALL_LOG;
 touch $INSTALL_LOG;
 
 #################################

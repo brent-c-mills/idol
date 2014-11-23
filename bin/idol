@@ -1,7 +1,7 @@
 #!/bin/bash
 
-set -e
-clear
+set -e;
+clear;
 
 #################################
 ##        DECLARATIONS:        ##
@@ -9,25 +9,25 @@ clear
 
 ##--DECLARING DIRECTORY STRUCTURE
 
-	BASE_DIR="PLACEHOLD_BASE_DIRECTORY"
+	BASE_DIR="PLACEHOLD_BASE_DIRECTORY";
 
-	NOW=$(date +"%m_%d_%Y_%H%M%S")
-	BIN_DIR=$BASE_DIR/bin
-	LIB_DIR=$BASE_DIR/lib
-	LOG_DIR=$BASE_DIR/log
-	LOG_OUT=$LOG_DIR/log_$NOW.log
-	TEST_DIR=$BASE_DIR/tests
-	MAN_DIR=$BASE_DIR/man
+	NOW=$(date +"%m_%d_%Y_%H%M%S");
+	BIN_DIR=$BASE_DIR/bin;
+	LIB_DIR=$BASE_DIR/lib;
+	LOG_DIR=$BASE_DIR/log;
+	LOG_OUT=$LOG_DIR/log_$NOW.log;
+	TEST_DIR=$BASE_DIR/tests;
+	MAN_DIR=$BASE_DIR/man;
 
 ##--DECLARING FUNCTIONS
 
 version() {
-	echo "Idol 0.0.1"
+	echo "Idol 0.0.1";
 }
 
 usage() {
 	version
-	echo "Usage: idol [-hlpv] [-c name] [-t name] [--longoption ...]"
+	echo "Usage: idol [-hlpv] [-c name] [-t name] [--longoption ...]";
 }
 
 help() {
@@ -55,28 +55,16 @@ fingerprint() {
 }
 
 create_idol() {
-	$BIN_DIR/idol_create.sh $OPERATING_SYSTEM $IDOL_NAME $BASE_DIR $LOG_OUT
+	$BIN_DIR/idol_create.sh $OPERATING_SYSTEM $IDOL_NAME $BASE_DIR $LOG_OUT;
 }
 
 test_idol() {
-	echo "Verifying Idol "${IDOL_NAME}"..." | tee -a $LOG_OUT;
-	if [[ -e ${TEST_DIR}/${IDOL_NAME} ]]; then
-		echo "Initiating BATS tests on Idol "${IDOL_NAME}"." | tee -a $LOG_OUT;
-		bats ${TEST_DIR}/${IDOL_NAME}
-		exit 0;
-	else
-		echo "Idol "${IDOL_NAME}" not found." | tee -a $LOG_OUT; exit 6;
-	fi
+	$BIN_DIR/idol_test.sh $IDOL_NAME $BASE_DIR $LOG_OUT;
 }
 
 package_idol() {
-	echo "PACKAGE FUNCTION COMING IN A FUTURE RELEASE..."
+	echo "PACKAGE FUNCTION COMING IN A FUTURE RELEASE...";
 }
-
-#################################
-##       END DECLARATIONS:     ##
-#################################
-
 
 #################################
 ##        ACCEPT INPUT:        ##
@@ -87,17 +75,17 @@ arguments=()
 for arg in "$@"; do
   if [ "${arg:0:1}" = "-" ]; then
     if [ "${arg:1:1}" = "-" ]; then
-      options[${#options[*]}]="${arg:2}"
+      options[${#options[*]}]="${arg:2}";
     else
-      index=1
+      index=1;
       while option="${arg:$index:1}"; do
-        [ -n "$option" ] || break
-        options[${#options[*]}]="$option"
-        let index+=1
+        [ -n "$option" ] || break;
+        options[${#options[*]}]="$option";
+        let index+=1;
       done
     fi
   else
-    arguments[${#arguments[*]}]="$arg"
+    arguments[${#arguments[*]}]="$arg";
   fi
 done
 
@@ -105,43 +93,39 @@ for option in "${options[@]}"; do
 	case "$option" in
 	"c" | "create" )
 	    IDOL_NAME=$2;
-		fingerprint
-		create_idol
+		fingerprint;
+		create_idol;
 		exit 0;
 	    ;;
 	"h" | "help" )
-	    help
-	    exit 0
+	    help;
+	    exit 0;
 	    ;;
     "l" | "list" )
-		list_idol
+		list_idol;
 		exit 0;
 		;;
 	"p" | "package" )
-	    package_idol
+	    package_idol;
 		exit 0;
 	    ;;
 	"t" | "test" )
     	IDOL_NAME=$2;
-		test_idol
+		test_idol;
 		exit 0;
     	;;
 	"v" | "version" )
-	    version
-	    exit 0
+	    version;
+	    exit 0;
 	    ;;
 	* )
 	    usage >&2
-	    exit 1
+	    exit 1;
 	    ;;
 	esac
 done
 
 if [ "${#arguments[@]}" -eq 0 ]; then
   usage >&2
-  exit 1
+  exit 1;
 fi
-
-#################################
-##     END ACCEPT INPUT:       ##
-#################################
