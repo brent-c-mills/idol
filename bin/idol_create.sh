@@ -32,7 +32,7 @@ copy_bats_requirements() {
 }
 
 create_bats_tests(){
-	BATS_CATEGORY=( "package" "user" "group" "environment" "hardware" );
+	BATS_CATEGORY=( "package" "user" "group" );
 
 	for i in "${BATS_CATEGORY[@]}"
 	do
