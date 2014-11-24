@@ -49,5 +49,4 @@ CURRENT FUNCTIONALITY:
 
 	Install:  Idol is currently able to install itself and a local instance of BATS 4.0.
 	Create:  Idol is currently able to create Idols.  
-		NOTE:  You will need to run all Idol commands from the ${basedir}/bin directory due to a bug.
 	List:  Idol is currently able to list all stored Idols.
