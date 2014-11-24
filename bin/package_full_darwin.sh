@@ -17,8 +17,8 @@ completion() {
 initialize_bats() {
     echo "#!/usr/bin/env bats" >> $OUTPUT_BATS
     echo "" >> $OUTPUT_BATS
-    echo "load test_helper" >> $OUTPUT_BATS
-    echo "fixtures bats" >> $OUTPUT_BATS
+#    echo "load test_helper" >> $OUTPUT_BATS
+#    echo "fixtures bats" >> $OUTPUT_BATS
     echo "" >> $OUTPUT_BATS
 }
 
