@@ -24,8 +24,10 @@ copy_bats_requirements() {
 
 	cp -r $LIB_DIR/fixtures $FULL_BATS/;
 	cp -r $LIB_DIR/test_helper.bash $FULL_BATS/;
+	mkdir $FULL_BATS/tmp;
 	cp -r $LIB_DIR/fixtures $HASH_BATS/;
 	cp -r $LIB_DIR/test_helper.bash $HASH_BATS/;
+	mkdir $HASH_BATS/tmp;
 
 }
 

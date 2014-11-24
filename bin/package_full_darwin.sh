@@ -15,31 +15,31 @@ completion() {
 }
 
 initialize_bats() {
-    echo "#!/usr/bin/env bats" >> $OUTPUT_BATS
-    echo "" >> $OUTPUT_BATS
-#    echo "load test_helper" >> $OUTPUT_BATS
-#    echo "fixtures bats" >> $OUTPUT_BATS
-    echo "" >> $OUTPUT_BATS
+    echo "#!/usr/bin/env bats" >> $OUTPUT_BATS;
+    echo "" >> $OUTPUT_BATS;
+    echo "load test_helper" >> $OUTPUT_BATS;
+    echo "fixtures bats" >> $OUTPUT_BATS;
+    echo "" >> $OUTPUT_BATS;
 }
 
 generate_package_list() {
-    rm -f /tmp/package_full.txt && touch /tmp/package_full.txt
-    ls /Applications/ >> /tmp/package_full.txt
+    rm -f /tmp/package_full.txt && touch /tmp/package_full.txt;
+    ls /Applications/ >> /tmp/package_full.txt;
 }
 
 generate_package_bats() {
     while IFS=, read -r package; do
 
-        PACKAGE=$package
+        PACKAGE=$package;
 
         echo "Adding package_full test for "${PACKAGE} >> $LOG_OUT;
-        echo "@test \"SOFTWARE CHECK - "${PACKAGE}"\" {" >> $OUTPUT_BATS
-        echo "ls /Applications | grep \""${PACKAGE}"\"" >> $OUTPUT_BATS
-        echo "[ \$? -eq 0 ]" >> $OUTPUT_BATS
-        echo "}" >> $OUTPUT_BATS
-        echo " " >> $OUTPUT_BATS
+        echo "@test \"SOFTWARE CHECK - "${PACKAGE}"\" {" >> $OUTPUT_BATS;
+        echo "ls /Applications | grep \""${PACKAGE}"\"" >> $OUTPUT_BATS;
+        echo "[ \$? -eq 0 ]" >> $OUTPUT_BATS;
+        echo "}" >> $OUTPUT_BATS;
+        echo " " >> $OUTPUT_BATS;
 
-    done < /tmp/package_full.txt
+    done < /tmp/package_full.txt;
 }
 
 
@@ -47,15 +47,15 @@ FULL_BATS=$1;
 IDOL_NAME=$2;
 LOG_OUT=$3;
 
-OUTPUT_BATS=$FULL_BATS/package_full.bats
+OUTPUT_BATS=$FULL_BATS/package_full.bats;
 
 #Acknowledge handoff...
-handoff
+handoff;
 
 #Initialize bats and generate package list / package bats.
-initialize_bats
-generate_package_list
-generate_package_bats
+initialize_bats;
+generate_package_list;
+generate_package_bats;
 
 #Acknowledge completion of BATS generation.
-completion
+completion;
