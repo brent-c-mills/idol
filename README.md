@@ -50,3 +50,19 @@ CURRENT FUNCTIONALITY:
 	Install:  Idol is currently able to install itself and a local instance of BATS 4.0.
 	Create:  Idol is currently able to create Idols.  
 	List:  Idol is currently able to list all stored Idols.
+
+CURRENT IDOL TESTS:
+
+Idol currently tests the following:
+**Installed Programs
+**Current Users (and permissions)
+**Current Groups (and permissions)
+
+PLANNED IDOL TESTS:
+
+Idol will soon support testing for:
+**Network configuration
+**Environment variables
+**Hardware configuration
+
+To request other functionality, please contact brent.c.mills@gmail.com or open an issue.
