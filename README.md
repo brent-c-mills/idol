@@ -62,15 +62,17 @@ To install Idol, run the install.sh script.  This script installs a version of B
 **CURRENT IDOL TESTS:**
 
   Idol currently tests the following:
-	1.Installed Programs
-	2.Current Users (and permissions)
-	3.Current Groups (and permissions)
+  
+	Installed Programs
+	Current Users (and permissions)
+	Current Groups (and permissions)
 
 **PLANNED IDOL TESTS:**
 
   Idol will soon support testing for:
-	1.Network configuration
-	2.Environment variables
-	3.Hardware configuration
+  
+	Network configuration
+	Environment variables
+	Hardware configuration
 
 To request other functionality, please contact brent.c.mills@gmail.com or open an issue.
