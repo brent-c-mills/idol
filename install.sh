@@ -145,6 +145,7 @@ if (! echo $PATH | grep "/bats/bin" >> /dev/null); then
 	esac
 fi
 
+
 #################################
 ##  CHECK IDOL FILESTRUCTURE:  ##
 #################################
@@ -163,6 +164,13 @@ if (grep "not ok" ${INSTALL_LOG} >> /dev/null); then
         echo "Idol directory structure is not intact.  See ./log/install.log for more information.";
         cancel_install;
 fi
+
+#################################
+## DEFINE IDOL BASE DIRECTORY  ##
+#################################
+
+sed -i -e "s+PLACEHOLD_BASE_DIR+${BASE_DIR}+g" ${BASE_DIR}/bin/idol;
+
 
 #################################
 ##          EDIT PATH:         ##
