@@ -1,8 +1,5 @@
 #!/usr/bin/env bats
- 
-@test "IDOL DIRECTORY STRUCTURE CHECK - bin/bats_current/bats_master.tar.gz" {
-[[ -e bin/bats_current/bats_master.tar.gz ]]
-}
+
  
 @test "IDOL DIRECTORY STRUCTURE CHECK - bin/group_full_centos.sh" {
 [[ -e bin/group_full_centos.sh ]]
@@ -98,6 +95,10 @@
  
 @test "IDOL DIRECTORY STRUCTURE CHECK - install.sh" {
 [[ -e install.sh ]]
+}
+
+@test "IDOL DIRECTORY STRUCTURE CHECK - lib/bats_current/bats_master.tar.gz" {
+[[ -e lib/bats_current/bats_master.tar.gz ]]
 }
  
 @test "IDOL DIRECTORY STRUCTURE CHECK - lib/test_helper.bash" {

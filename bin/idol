@@ -67,6 +67,10 @@ package_idol() {
 	echo "PACKAGE FUNCTION COMING IN A FUTURE RELEASE...";
 }
 
+create_log() {
+	touch ${LOG_OUT};
+}
+
 #################################
 ##        ACCEPT INPUT:        ##
 #################################
@@ -93,6 +97,7 @@ done
 for option in "${options[@]}"; do
 	case "$option" in
 	"c" | "create" )
+		create_log;
 	    IDOL_NAME=$2;
 		fingerprint;
 		create_idol;
@@ -107,10 +112,12 @@ for option in "${options[@]}"; do
 		exit 0;
 		;;
 	"p" | "package" )
+		create_log;
 	    package_idol;
 		exit 0;
 	    ;;
 	"t" | "test" )
+		create_log;
     	IDOL_NAME=$2;
 		test_idol;
 		exit 0;
