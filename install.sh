@@ -15,7 +15,7 @@ cancel_install() {
 
 install_bats() {
 	#Check if BATS installation files exist in the idol/bin/bats_current directory.
-	if [ ! -e $BASE_DIR/bin/bats_current/bats_master.tar.gz ]; then
+	if [ ! -e $BASE_DIR/lib/bats_current/bats_master.tar.gz ]; then
     	echo "BATS installer files not found." | tee -a $INSTALL_LOG;
     	cancel_install;
 	fi
@@ -86,7 +86,8 @@ locate_bats() {
 
         #Adding $BATS_PATH/bin/bats to the $PATH.
         echo "export PATH="${BATS_PATH}/bin/bats:${PATH} >> ~/.bash_profile;
-		source ~/.bash_profile;
+		source ~/.bash_profile; #works on some systems.
+		. ~/.bash_profile; #works on some systems.
 
 	else
 		echo "Unable to locate the BATS executable at "${BATS_PATH}"/bin/bats." | tee -a $INSTALL_LOG;
@@ -168,7 +169,8 @@ fi
 #################################
 
 #Add the idol script to the $PATH.
-echo "export PATH="${BASE_DIR}/bin:${PATH} >> ~/.bash_profile;
+
+echo "export PATH="${BASE_DIR}/bin:"\$PATH" >> ~/.bash_profile;
 source ~/.bash_profile; #Works on some systems.
 . ~/.bash_profile; #Works on some systems.
 
