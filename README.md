@@ -43,10 +43,11 @@ INSTALLATION:
 
 To install Idol, run the install.sh script.  This script installs a version of BATS as well as installing Idol and running a series of BATS tests against the Idol installation.
 
-	NOTE:  There is currently an issue where you the Idol installation script is unable to properly refresh the PATH.  You will need to close your terminal session and re-open after installing Idol.
+	NOTE:  There is currently an issue where the Idol installation script is unable to properly refresh the PATH.  You will need to close your terminal session and re-open after installing Idol.
 
 CURRENT FUNCTIONALITY:
 
 	Install:  Idol is currently able to install itself and a local instance of BATS 4.0.
-	Create:  Idol is currently able to create Idols.  You will need to run all Idol commands from the ${basedir}/bin directory due to a bug.
+	Create:  Idol is currently able to create Idols.  
+		NOTE:  You will need to run all Idol commands from the ${basedir}/bin directory due to a bug.
 	List:  Idol is currently able to list all stored Idols.
