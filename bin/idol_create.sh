@@ -22,10 +22,11 @@ copy_bats_requirements() {
 	#Temporarily commenting out these additions as they seem to cause more issues than they solve.
 	#All bats generation scripts will likewise have references to these files commented out.
 
-#	cp -r $LIB_DIR/fixtures $FULL_BATS/;
-#	cp -r $LIB_DIR/test_helper.bash $FULL_BATS/;
-#	cp -r $LIB_DIR/fixtures $HASH_BATS/;
-#	cp -r $LIB_DIR/test_helper.bash $HASH_BATS/;
+	cp -r $LIB_DIR/fixtures $FULL_BATS/;
+	cp -r $LIB_DIR/test_helper.bash $FULL_BATS/;
+	cp -r $LIB_DIR/fixtures $HASH_BATS/;
+	cp -r $LIB_DIR/test_helper.bash $HASH_BATS/;
+
 }
 
 create_bats_tests(){
