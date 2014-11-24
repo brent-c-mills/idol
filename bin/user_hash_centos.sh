@@ -44,7 +44,7 @@ HASH_BATS=$1;
 IDOL_NAME=$2;
 LOG_OUT=$3;
 
-OUTPUT_BATS=$HASH_BATS/user_full.bats;
+OUTPUT_BATS=$HASH_BATS/user_hash.bats;
 
 #Acknowledge handoff...
 handoff;
