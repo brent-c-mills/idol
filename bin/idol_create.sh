@@ -18,8 +18,10 @@ create_idol_readme() {
 }
 
 copy_bats_requirements() {
-	cp -r $LIB_DIR/fixtures $IDOL_DIR/;
-	cp -r $LIB_DIR/test_helper.bash $IDOL_DIR/;
+	cp -r $LIB_DIR/fixtures $FULL_BATS/;
+	cp -r $LIB_DIR/test_helper.bash $FULL_BATS/;
+	cp -r $LIB_DIR/fixtures $HASH_BATS/;
+	cp -r $LIB_DIR/test_helper.bash $HASH_BATS/;
 }
 
 create_bats_tests(){
