@@ -34,35 +34,43 @@ idol
 ====
 
 
-DESCRIPTION:
+**DESCRIPTION:**
 
 Idol sits on top of BATS (https://github.com/sstephenson/bats).  Idol creates and stores Idols (Golden Images) --> ( A Golden Bat == an Idol!  Get it? ).  Future systems can be tested against these Idols to check compliance to the golden image / golden standard for a given system.
 
 
-INSTALLATION:
+**INSTALLATION:**
 
 To install Idol, run the install.sh script.  This script installs a version of BATS as well as installing Idol and running a series of BATS tests against the Idol installation.
 
 	NOTE:  There is currently an issue where the Idol installation script is unable to properly refresh the PATH.  You will need to close your terminal session and re-open after installing Idol.
 
-CURRENT FUNCTIONALITY:
+**CURRENT FUNCTIONALITY:**
 
 	Install:  Idol is currently able to install itself and a local instance of BATS 4.0.
 	Create:  Idol is currently able to create Idols.  
 	List:  Idol is currently able to list all stored Idols.
+	
+**PLANNED FUNCTIONALITY:**
+
+	Package:  Idol will be able to package itself for deployment on remote systems (including all generated Idols).
+	Test:  Idol will be able to run automated tests against any stored Idol.
+		Tests first attempt hash matches.  Failing this, they run a full battery of tests.  
+		This saves time over traditional BATS workflow.
+	Destroy:  Idol will be able to destroy a given Idol.
 
 **CURRENT IDOL TESTS:**
 
   Idol currently tests the following:
-  *Installed Programs
-  *Current Users (and permissions)
-  *Current Groups (and permissions)
+	1.Installed Programs
+	2.Current Users (and permissions)
+	3.Current Groups (and permissions)
 
 **PLANNED IDOL TESTS:**
 
   Idol will soon support testing for:
-  *Network configuration
-  *Environment variables
-  *Hardware configuration
+	1.Network configuration
+	2.Environment variables
+	3.Hardware configuration
 
 To request other functionality, please contact brent.c.mills@gmail.com or open an issue.
