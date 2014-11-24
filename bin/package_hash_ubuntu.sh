@@ -34,8 +34,8 @@ generate_package_hash_bats() {
     echo "Generating Package Hash Test for "${IDOL_NAME} >> $LOG_OUT;
     echo "@test \"SOFTWARE CHECK - "${IDOL_NAME}" Package HASH\" {" >> $OUTPUT_BATS;
     echo "dpkg --list | awk '{ print $2 }' > /tmp/package_hash.txt" >> $OUTPUT_BATS;
-    echo "HASHCHECK=($(md5sum /tmp/package_hash.txt))" >> $OUTPUT_BATS;
-    echo "[ $HASHCHECK -eq ${HASHGOLDEN} ]" >> $OUTPUT_BATS;
+    echo "HASHCHECK=(\$(md5sum /tmp/package_hash.txt))" >> $OUTPUT_BATS;
+    echo "[ \$HASHCHECK = ${HASHGOLDEN} ]" >> $OUTPUT_BATS;
     echo "}" >> $OUTPUT_BATS;
     echo " " >> $OUTPUT_BATS;
 }

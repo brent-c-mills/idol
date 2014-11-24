@@ -33,8 +33,8 @@ generate_user_hash() {
 generate_user_hash_bats() {
     echo "@test \"USER CHECK - "${IDOL_NAME}" user HASH\" {" >> $OUTPUT_BATS;
     echo "cat /etc/passwd > /tmp/user_hash.txt" >> $OUTPUT_BATS;
-    echo "HASHCHECK=($(md5sum /tmp/user_hash.txt))" >> $OUTPUT_BATS;
-    echo "[ $HASHCHECK -eq ${HASHGOLDEN} ]" >> $OUTPUT_BATS;
+    echo "HASHCHECK=(\$(md5sum /tmp/user_hash.txt))" >> $OUTPUT_BATS;
+    echo "[ \$HASHCHECK = ${HASHGOLDEN} ]" >> $OUTPUT_BATS;
     echo "}" >> $OUTPUT_BATS;
     echo " " >> $OUTPUT_BATS;
 }

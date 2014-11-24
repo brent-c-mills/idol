@@ -32,8 +32,8 @@ generate_package_hash() {
 generate_package_hash_bats() {
     echo "@test \"SOFTWARE CHECK - "${IDOL_NAME}" Package HASH\" {" >> $OUTPUT_BATS;
     echo "ls /Applications/ > /tmp/package_hash.txt" >> $OUTPUT_BATS;
-    echo "HASHCHECK=$(md5 /tmp/package_hash.txt | awk '{ print $4 }')" >> $OUTPUT_BATS;
-    echo "[ $HASHCHECK -eq ${HASHGOLDEN} ]" >> $OUTPUT_BATS;
+    echo "HASHCHECK=\$(md5 /tmp/package_hash.txt | awk '{ print $4 }')" >> $OUTPUT_BATS;
+    echo "[ \$HASHCHECK = ${HASHGOLDEN} ]" >> $OUTPUT_BATS;
     echo "}" >> $OUTPUT_BATS;
     echo " " >> $OUTPUT_BATS;
 }
