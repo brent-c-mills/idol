@@ -3,10 +3,6 @@
 set -e;
 clear;
 
-INSTALL_LOG="/tmp/idol_install.log";
-rm -f $INSTALL_LOG;
-touch $INSTALL_LOG;
-
 #################################
 ##         FUNCTIONS!:         ##
 #################################
@@ -14,7 +10,6 @@ touch $INSTALL_LOG;
 cancel_install() {
 	echo "Cancelling installation." | tee -a $INSTALL_LOG;
 	echo "For help, please contact brent.c.mills@gmail.com.";
-	mv $INSTALL_LOG BASE_DIR/log/install.log;
 	exit 1;
 }
 
@@ -26,19 +21,17 @@ install_bats() {
 	fi
 
 	#Prompt user to input a new installation path for BATS (Default is /opt/bats)
-	read -e -p "Please specify an input directory for BATS. [/opt/bats] " REPLY;
+	read -e -p "Please specify an input directory for BATS: ["${BASE_DIR}"/bats]"  REPLY;
 	echo "";
 
 	#Read the user's selected installation path.
 	if [[ -z $REPLY ]];
 	then
-	    BATS_PATH="/opt/bats";
+	    BATS_PATH=${BASE_DIR}/bats;
 	    echo "BATS will be installed in "$BATS_PATH | tee -a $INSTALL_LOG;
-	    exit 0;
 	else
 		eval BATS_PATH=$REPLY;
 	    echo "BATS will be installed in "$BATS_PATH | tee -a $INSTALL_LOG;
-	    exit 0;
 	fi
 
 	#Check if specified installation path already exists.  Exit installation if it does.
@@ -48,6 +41,7 @@ install_bats() {
 	fi
 
 	#Create BATS installation directory.
+	echo "Creating BATS installation directory." | tee -a $INSTALL_LOG
 	mkdir $BATS_PATH;
 	#Verify that BATS installation directory was created successfully.
 	if [[ $? -ne 0 ]]; then
@@ -56,7 +50,7 @@ install_bats() {
 	fi
 
 	#Expand BATS files into installation directory.
-	tar -zxvf $BASE_DIR/bin/bats_current/bats_master.tar.gz -C $BATS_PATH/;
+	tar -zxvf $BASE_DIR/lib/bats_current/bats_master.tar.gz -C $BATS_PATH/;
 	#Verify that BATS files were successfully expanded into installation directory.
 	if [[ $? -ne 0 ]]; then
     	echo "Unable expand BATS files into "$BATS_PATH | tee -a $INSTALL_LOG;
@@ -64,16 +58,9 @@ install_bats() {
 	fi
 
 	#Export bats to $PATH
-	echo "export PATH="${BATS_PATH}/bin/bats:${PATH} >> ~/.bash_profile;
-	source ~/.bash_profile;
-
-	#Run BATS installation script.
-	$BATS_PATH/install.sh /usr/local/bin/bats;
-	#Verify that BATS was installed successfully.
-	if [[ $? -ne 0 ]]; then
-    	echo "BATS installation failed..." | tee -a $INSTALL_LOG;
-    	cancel_install;
-	fi
+	echo "export PATH="${BATS_PATH}/bin:"\$PATH" >> ~/.bash_profile;
+	source ~/.bash_profile; #Works on some systems.
+	. ~/.bash_profile; #Works on some systems.
 
 	echo "BATS was successfully installed to "$BATS_PATH"." | tee -a $INSTALL_LOG;
 }
@@ -113,11 +100,19 @@ locate_bats() {
 echo "Determining installation directory..." | tee -a $INSTALL_LOG;
 BASE_DIR="`pwd`";
 
+#################################
+##     CREATE INSTALL LOG:     ##
+#################################
+
+INSTALL_LOG=${BASE_DIR}/log/install.log;
+rm -f $INSTALL_LOG;
+touch $INSTALL_LOG;
+
 
 #################################
 ##       CHECK FOR BATS:       ##
 #################################
-if [[ ! -e /usr/local/bin/bats ]]; then
+if (! echo $PATH | grep "/bats/bin" >> /dev/null); then
 	echo "";
 	echo "A BATS install could not be found...";
 	echo "What would you like to do?";
@@ -169,19 +164,13 @@ if (grep "not ok" ${INSTALL_LOG} >> /dev/null); then
 fi
 
 #################################
-##   EDIT BASE_DIR IN IDOL:    ##
-#################################
-
-#Modify the BASE_DIR variable in the idol script.  This allows idol to determine the appropriate path to all associated scripts.
-sed -i -e 's/PLACEHOLD_BASE_DIRECTORY/'$BASE_DIR'/g' ./bin/idol;
-
-#################################
 ##          EDIT PATH:         ##
 #################################
 
 #Add the idol script to the $PATH.
-echo "export PATH="${BASE_DIR}/bin/idol:${PATH} >> ~/.bash_profile;
-source ~/.bash_profile;
+echo "export PATH="${BASE_DIR}/bin:${PATH} >> ~/.bash_profile;
+source ~/.bash_profile; #Works on some systems.
+. ~/.bash_profile; #Works on some systems.
 
 
 #################################
@@ -189,5 +178,4 @@ source ~/.bash_profile;
 #################################
 
 echo "Installation completed successfully." | tee -a $INSTALL_LOG;
-mv $INSTALL_LOG $BASE_DIR/log/install.log;
 exit 0;
