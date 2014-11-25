@@ -50,13 +50,13 @@ To install Idol, run the install.sh script.  This script installs a version of B
 	Install:  Idol is currently able to install itself and a local instance of BATS 4.0.
 	Create:  Idol is currently able to create Idols.  
 	List:  Idol is currently able to list all stored Idols.
+	Test:  Idol will be able to run automated tests against any stored Idol.
+		Tests first attempt hash matches.  Failing this, they run a full battery of tests.  
+		This saves time over traditional BATS workflow.
 	
 **PLANNED FUNCTIONALITY:**
 
 	Package:  Idol will be able to package itself for deployment on remote systems (including all generated Idols).
-	Test:  Idol will be able to run automated tests against any stored Idol.
-		Tests first attempt hash matches.  Failing this, they run a full battery of tests.  
-		This saves time over traditional BATS workflow.
 	Destroy:  Idol will be able to destroy a given Idol.
 
 **CURRENT IDOL TESTS:**
