@@ -1,20 +1,27 @@
 #!/bin/bash
 
-set -e
+set -e;
 
-bold=`tput bold`
-normal=`tput sgr0`
-clear
+bold=`tput bold`;
+normal=`tput sgr0`;
+clear;
 
-
+TEST_DIR=$1;
 
 echo "idol.sh";
 echo "";
 
-echo "${bold}	CURRENT IDOLS	${normal}"
+echo "${bold}	CURRENT IDOLS	${normal}";
 echo "";
 
-[ "$(ls -A /$1)" ] && ls -1 $1 || echo "  NO IDOLS  "
+if [ ! "$(ls -A /$1)" ]; then
+	echo "  NO IDOLS  ";
+else
+	available=$(ls -1 ${TEST_DIR});
+	for i in available[@]; do
+	    echo "  "$available;
+	done
+fi
 echo "";
 
 #Output list of current golden images

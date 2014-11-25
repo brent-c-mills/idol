@@ -11,10 +11,11 @@ create_idol_dir() {
 create_idol_readme() {
 	echo "IDOL INFORMATION:" >> $IDOL_DIR/README.txt;
 	echo "" >> $IDOL_DIR/README.txt;
-	echo "Log file.........  " $LOG_OUT >> $IDOL_DIR/README.txt;
-	echo "Created on.......  " $NOW >> $IDOL_DIR/README.txt;
-	echo "Idol name........  " $IDOL_NAME >> $IDOL_DIR/README.txt;
-	echo "Operating System.  " $OPERATING_SYSTEM >> $IDOL_DIR/README.txt;
+	echo "NAME:"$IDOL_NAME  >> $IDOL_DIR/README.txt;
+	echo "OS:"$OPERATING_SYSTEM  >> $IDOL_DIR/README.txt;
+	echo "DATE:"$(date +"%m_%d_%Y") >> $IDOL_DIR/README.txt;
+	echo "AUTHOR:"$"`whoami`" >> $IDOL_DIR/README.txt;
+
 }
 
 copy_bats_requirements() {
