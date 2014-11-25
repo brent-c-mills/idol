@@ -2,6 +2,18 @@
 
 set -e;
 
+handoff() {
+    echo "idol_test.sh has been kicked off by idol_create.sh..." | tee -a $LOG_OUT;
+    echo "idol_test.sh is initiating hash and full bats tests..." | tee -a $LOG_OUT;
+    echo "idol name:			"$IDOL_NAME | tee -a $LOG_OUT;
+    echo "" | tee -a $LOG_OUT;
+}
+
+completion() {
+    echo "idol_test.sh has completed testing for idol "$IDOL_NAME | tee -a $LOG_OUT;
+    exit 0;
+}
+
 verify_idol() {
 	echo "Verifying Idol "${IDOL_NAME}"..." | tee -a $LOG_OUT;
 	if [[ ! -e ${TEST_DIR}/${IDOL_NAME} ]]; then
@@ -11,19 +23,33 @@ verify_idol() {
 }
 
 hash_bats_test() {
-	bats ${HASH_BATS}/${hashbats} | tee -a ${hashbats_log};
-	cat ${hashbats_log} >> $LOG_OUT;
 
-    if (grep "not ok" ${hashbats_log} >> /dev/null); then
-        echo ${hashbats_log}" does not match the golden idol.  Full tests will be run..." | tee -a $LOG_OUT;
-        full_bats_test;
+	local hash_bats_name=$(basename ${hashbats});
+	IFS=_ read bats_category bats_type <<< $hash_bats_name;
+	echo "Hash test for "${hash_bats_name} > ${LOG_OUT};
+	echo "";
+	echo "Testing hash test for "${hash_bats_name}" on Idol "${IDOL_NAME} | tee -a ${LOG_OUT};
+	echo "===================" | tee -a ${LOG_OUT};
+
+	if [[ $(bats ${hashbats} | tee -a ${LOG_OUT}) == *"not ok"* ]]; then
+        echo ${hash_bats_name}" does not match the golden image for this Idol.  Full tests will be run." | tee -a ${LOG_OUT};
+        echo "" | tee -a ${LOG_OUT};
+        full_bats_test ${bats_category};
 	fi
 
-	rm -f ${hashbats_log};
 }
 
 full_bats_test() {
-	echo "Full bats test functionality isn't available yet.";
+	bats_category=$1;
+	fullbats="${bats_category}_full.bats";
+
+	echo "A full bats test for "${IDOL_NAME}" : "${bats_category}" has been triggered." > ${LOG_OUT};
+	echo "";
+	echo "Commencing full test for "${fullbats}" on Idol "${IDOL_NAME} | tee -a ${LOG_OUT};
+	echo "===================" | tee -a ${LOG_OUT};
+	bats $FULL_BATS/${fullbats} | tee -a ${LOG_OUT}
+
+	echo "Completed full bats test for "${IDOL_NAME}" : "${bats_category}"." | tee -a ${LOG_OUT};
 }
 
 
@@ -48,34 +74,27 @@ BASE_DIR=$2;
 LOG_OUT=$3;
 
 NOW=$(date +"%m_%d_%Y_%H%M%S");
-BIN_DIR=$BASE_DIR/bin;
-LIB_DIR=$BASE_DIR/lib;
 TEST_DIR=$BASE_DIR/tests;
 IDOL_DIR=$TEST_DIR/$IDOL_NAME;
 FULL_BATS=$IDOL_DIR/full_bats;
 HASH_BATS=$IDOL_DIR/hash_bats;
 
-
 #################################
 ##    VERIFY IDOL EXISTANCE    ##
 #################################
-
 verify_idol;
 
 
 #################################
 ##       TEST HASH BATS        ##
 #################################
-
 for hashbats in ${HASH_BATS}/*.bats; do
-    local hashbats_log=/tmp/${hashbats}.tmp.log
-
     hash_bats_test;
 
 done
-
 
 #################################
 ##       TEST FULL BATS        ##
 #################################
 
+#Called from within hash tests.  This is due to the fact that full tests should only be run if hash tests fail (to save time).
