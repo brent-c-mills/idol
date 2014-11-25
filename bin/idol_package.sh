@@ -40,7 +40,7 @@ package_idol() {
 
 	echo "Your packaged Idol instance will be output to "${OUTPUT_DIR}"/idol.tar.gz" | tee -a ${LOG_OUT};
 
-	tar --exclude="${BASE_DIR}/bats" --exclude="${BASE_DIR}/.git" -cvzf "${OUTPUT_DIR}/idol.tar.gz" -C ${BASE_DIR};
+	tar --exclude="${BASE_DIR}/bats" --exclude="${BASE_DIR}/.git" -cvzf "${OUTPUT_DIR}/idol.tar.gz" -C $(dirname "${BASE_DIR}") ${BASE_DIR};
 
 	completion;
 }
