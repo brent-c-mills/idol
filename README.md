@@ -51,14 +51,10 @@ To install Idol, run the install.sh script.  This script installs a version of B
 	Create:  Idol is currently able to create Idols.  
 	Delete:  Idol is able to safely and easily delete existing Idols.
 	List:  Idol is currently able to list all stored Idols.
+	Package:  Idol is able to package itself for deployment on remote systems (including all generated Idols).
 	Test:  Idol is able to run automated tests against any stored Idol.
 		Idol first attempts hash matches.  Failing this, it runs a full battery of tests.  
 		This saves time over traditional BATS workflow.
-	
-**PLANNED FUNCTIONALITY:**
-
-	Package:  Idol will be able to package itself for deployment on remote systems (including all generated Idols).
-	
 
 **CURRENT IDOL TESTS:**
 
