@@ -58,6 +58,10 @@ create_idol() {
 	$BIN_DIR/idol_create.sh $OPERATING_SYSTEM $IDOL_NAME $BASE_DIR $LOG_OUT;
 }
 
+delete_idol() {
+	$BIN_DIR/idol_delete.sh $IDOL_NAME $BASE_DIR $LOG_OUT;
+}
+
 test_idol() {
 	$BIN_DIR/idol_test.sh $IDOL_NAME $BASE_DIR $LOG_OUT;
 }
@@ -101,6 +105,12 @@ for option in "${options[@]}"; do
 		fingerprint;
 		create_idol;
 		exit 0;
+	    ;;
+	"d" | "delete" )
+	    create_log;
+	    IDOL_NAME=$2;
+	    delete_idol;
+	    exit 0;
 	    ;;
 	"h" | "help" )
 	    help;
