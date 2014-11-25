@@ -20,7 +20,7 @@ install_bats() {
     	cancel_install;
 	fi
 
-	#Prompt user to input a new installation path for BATS (Default is /opt/bats)
+	#Prompt user to input a new installation path for BATS (Default is ${BASE_DIR}/bats).
 	read -e -p "Please specify an input directory for BATS: ["${BASE_DIR}"/bats]"  REPLY;
 	echo "";
 

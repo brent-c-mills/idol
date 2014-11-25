@@ -67,7 +67,7 @@ test_idol() {
 }
 
 package_idol() {
-	echo "PACKAGE FUNCTION COMING IN A FUTURE RELEASE...";
+	$BIN_DIR/idol_package.sh $BASE_DIR $LOG_OUT;
 }
 
 create_log() {
