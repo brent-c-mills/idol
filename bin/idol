@@ -11,7 +11,7 @@ clear;
 
 	BASE_DIR="PLACEHOLD_BASE_DIR";
 
-	NOW=$(date +"%m_%d_%Y_%H%M%S");
+	NOW=$(date +"%m_%d_%Y_%H%M");
 	BIN_DIR=$BASE_DIR/bin;
 	LIB_DIR=$BASE_DIR/lib;
 	LOG_DIR=$BASE_DIR/log;
