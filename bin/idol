@@ -22,7 +22,7 @@ clear;
 ##--DECLARING FUNCTIONS
 
 version() {
-	echo "Idol 1.0";
+	echo "Idol 0.1";
 }
 
 usage() {
