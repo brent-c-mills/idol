@@ -45,6 +45,24 @@ To install Idol, run the install.sh script.  This script installs a version of B
 
 	NOTE:  There is currently an issue where the Idol installation script is unable to properly refresh the PATH.  You will need to close your terminal session and re-open after installing Idol.
 
+
+**GETTING STARTED:**
+
+To get started with Idol, use:
+	#idol --help
+
+
+**BASIC COMMANDS:**
+
+Idol accepts the following commands:
+	#idol -h , #idol --help      :  Displays the help menu
+	#idol -c, #idol --create     :  Create a new Idol golden image
+	#idol -d, #idol --delete     :  Safely and easily delete a specified Idol golden image
+	#idol -l, #idol --list       :  List all current Idol golden images
+	#idol -p, #idol --package    :  Package a copy of your Idol instance for testing on a remote system
+	#idol -t, #idol --test       :  Test the current system against an Idol golden image
+
+
 **CURRENT FUNCTIONALITY:**
 
 	Install:  Idol is currently able to install itself and a local instance of BATS 4.0.
