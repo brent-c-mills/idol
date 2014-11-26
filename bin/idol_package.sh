@@ -38,9 +38,15 @@ package_idol() {
 		fi
 	fi
 
-	echo "Your packaged Idol instance will be output to "${OUTPUT_DIR}"/idol.tar.gz" | tee -a ${LOG_OUT};
 
+	echo "Resetting pre-installation variables..." >> ${LOG_OUT};
+	sed -i -e "s+${BASE_DIR}+PLACEHOLD_BASE_DIR+g" ${BASE_DIR}/bin/idol;
+
+	echo "Your packaged Idol instance will be output to "${OUTPUT_DIR}"/idol.tar.gz" | tee -a ${LOG_OUT};
 	tar --exclude="${BASE_DIR}/bats" --exclude="${BASE_DIR}/.git" -cvzf "${OUTPUT_DIR}/idol.tar.gz" -C $(dirname "${BASE_DIR}") idol;
+
+	echo "Resetting post-installation variables..." >> ${LOG_OUT};
+	sed -i -e "s+PLACEHOLD_BASE_DIR+${BASE_DIR}+g" ${BASE_DIR}/bin/idol;
 
 	completion;
 }
