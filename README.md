@@ -59,7 +59,7 @@ Idol accepts the following commands:
 	#idol -c, #idol --create     :  Create a new Idol golden image
 	#idol -d, #idol --delete     :  Safely and easily delete a specified Idol golden image
 	#idol -h, #idol --help       :  Displays the help menu
-	#idol -i, #idol --help       :  Import a packaged Idol into your Idol instance
+	#idol -i, #idol --import     :  Import a packaged Idol into your Idol instance
 	#idol -l, #idol --list       :  List all current Idol golden images
 	#idol -p, #idol --package    :  Package a copy of your Idol instance for testing on a remote system
 	#idol -t, #idol --test       :  Test the current system against an Idol golden image
