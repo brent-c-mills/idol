@@ -55,9 +55,11 @@ To get started with Idol, use:
 **BASIC COMMANDS:**
 
 Idol accepts the following commands:
-	#idol -h , #idol --help      :  Displays the help menu
+
 	#idol -c, #idol --create     :  Create a new Idol golden image
 	#idol -d, #idol --delete     :  Safely and easily delete a specified Idol golden image
+	#idol -h, #idol --help       :  Displays the help menu
+	#idol -i, #idol --help       :  Import a packaged Idol into your Idol instance
 	#idol -l, #idol --list       :  List all current Idol golden images
 	#idol -p, #idol --package    :  Package a copy of your Idol instance for testing on a remote system
 	#idol -t, #idol --test       :  Test the current system against an Idol golden image
@@ -73,6 +75,7 @@ Idol accepts the following commands:
 	Test:  Idol is able to run automated tests against any stored Idol.
 		Idol first attempts hash matches.  Failing this, it runs a full battery of tests.  
 		This saves time over traditional BATS workflow.
+	Import:  Import a packaged Idol from a remote instance into your Idol instance.
 
 **CURRENT IDOL TESTS:**
 

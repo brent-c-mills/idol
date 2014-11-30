@@ -62,6 +62,10 @@ delete_idol() {
 	$BIN_DIR/idol_delete.sh $IDOL_NAME $BASE_DIR $LOG_OUT;
 }
 
+import_idol() {
+	$BIN_DIR/idol_import.sh $BASE_DIR $LOG_OUT;
+}
+
 test_idol() {
 	$BIN_DIR/idol_test.sh $IDOL_NAME $BASE_DIR $LOG_OUT;
 }
@@ -114,6 +118,11 @@ for option in "${options[@]}"; do
 	    ;;
 	"h" | "help" )
 	    help;
+	    exit 0;
+	    ;;
+	"i" | "import" )
+	    create_log;
+	    import_idol;
 	    exit 0;
 	    ;;
     "l" | "list" )

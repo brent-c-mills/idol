@@ -107,8 +107,8 @@ package_idol_individual() {
 		fi
 	fi
 
-	echo "Your packaged Idol will be output to "${OUTPUT_DIR}"/"${IDOL_NAME}".tar.gz" | tee -a ${LOG_OUT};
-	tar -cvzf "${OUTPUT_DIR}/${IDOL_NAME}.tar.gz" -C ${TEST_DIR} ${IDOL_NAME};
+	echo "Your packaged Idol will be output to "${OUTPUT_DIR}"/"${IDOL_NAME}".idol" | tee -a ${LOG_OUT};
+	tar -cvzf "${OUTPUT_DIR}/${IDOL_NAME}.idol" -C ${TEST_DIR} ${IDOL_NAME};
 
 	completion;
 }
