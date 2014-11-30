@@ -14,7 +14,7 @@ echo "	idol.sh - Golden Image BATS test generator";
 echo "";
 
 echo "${bold}SYNOPSIS${normal}"
-echo "	${bold}idol.sh${normal} [-hlpv] [-cdt name] [--longoption ...]";
+echo "	${bold}idol.sh${normal} [-hilpv] [-cdt name] [--longoption ...]";
 echo "";
 
 echo "${bold}DESCRIPTION${normal}";
@@ -31,6 +31,8 @@ echo "";
 echo "	${bold}-d, --delete${normal}	Delete and existing Idol.";
 echo "";
 echo "	${bold}-h, --help${normal}	Show this help message.";
+echo "";
+echo "	${bold}-i, --import${normal}	Import a packaged Idol into your Idol instance.";
 echo "";
 echo "	${bold}-l, --list${normal}	List all currently stored golden images.";
 echo "";
