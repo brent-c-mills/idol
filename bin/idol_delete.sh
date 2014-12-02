@@ -5,13 +5,13 @@ set -e;
 cancel() {
     echo "" | tee -a ${LOG_OUT};
     echo "idol_delete.sh has been cancelled." | tee -a ${LOG_OUT};
-    echo "idol "$IDOL_NAME" not deleted." | tee -a ${LOG_OUT};
+    echo "idol "${IDOL_NAME}" not deleted." | tee -a ${LOG_OUT};
     exit 1;
 }
 
 completion() {
     echo "" | tee -a ${LOG_OUT};
-    echo "idol_delete.sh has successfully deleted idol "$IDOL_NAME | tee -a ${LOG_OUT};
+    echo "idol_delete.sh has successfully deleted idol "${IDOL_NAME} | tee -a ${LOG_OUT};
     exit 0;
 }
 
@@ -26,7 +26,7 @@ delete_idol() {
 
 handoff() {
     echo "idol_delete.sh has been kicked off by idol_create.sh..." | tee -a ${LOG_OUT};
-    echo "idol name:	"$IDOL_NAME | tee -a ${LOG_OUT};
+    echo "idol name:	"${IDOL_NAME} | tee -a ${LOG_OUT};
     echo "" | tee -a ${LOG_OUT};
 }
 
@@ -90,7 +90,7 @@ warn_and_verify() {
 
 EXPECTED_ARGS=3;
 
-if [ $# -ne $EXPECTED_ARGS ]; then
+if [ $# -ne ${EXPECTED_ARGS} ]; then
 	echo "Something has gone wrong.  The script idol_test.sh expected 3 arguments from idol, but only received "$#".";
 	exit 1;
 fi
@@ -104,8 +104,8 @@ IDOL_NAME=$1;
 BASE_DIR=$2;
 LOG_OUT=$3;
 
-TEST_DIR=$BASE_DIR/tests;
-IDOL_DIR=$TEST_DIR/$IDOL_NAME;
+TEST_DIR=${BASE_DIR}/tests;
+IDOL_DIR=${TEST_DIR}/${IDOL_NAME};
 
 #################################
 ##       ACCEPT HANDOFF        ##

@@ -44,7 +44,7 @@ check_bats() {
 completion() {
 	echo "";
 	echo "Installation completed successfully." | tee -a $INSTALL_LOG;
-	echo "Please log out or reboot before using Idol."
+	echo "Please log out or reboot before using Idol.";
 	exit 0;
 }
 
@@ -116,15 +116,15 @@ test_bats_install() {
 
 test_idol_install() {
 	echo "";
-	echo "Checking for idol directory structure .bats file." | tee -a $INSTALL_LOG;
+	echo "Checking for idol directory structure .bats file." | tee -a ${INSTALL_LOG};
 	if [[ ! -e ${BASE_DIR}/lib/idol.bats ]]; then
-		echo "Idol directory structure .bats file could not be found." | tee -a $INSTALL_LOG;
+		echo "Idol directory structure .bats file could not be found." | tee -a ${INSTALL_LOG};
 		cancel_install;
 	fi
 
-	echo "Executing BATS test against idol directory structure." | tee -a $INSTALL_LOG;
-	echo "" | tee -a $INSTALL_LOG;
-	bats $BASE_DIR/lib/idol.bats | tee -a $INSTALL_LOG; 
+	echo "Executing BATS test against idol directory structure." | tee -a ${INSTALL_LOG};
+	echo "" | tee -a ${INSTALL_LOG};
+	bats ${BASE_DIR}/lib/idol.bats | tee -a ${INSTALL_LOG}; 
 
 	if (grep "not ok" ${INSTALL_LOG} >> /dev/null); then
 	        echo "Idol directory structure is not intact.  See ./log/install.log for more information.";
@@ -136,7 +136,7 @@ test_idol_install() {
 #################################
 ##    FIND BASE DIRECTORY:     ##
 #################################
-echo "Determining installation directory..." | tee -a $INSTALL_LOG;
+echo "Determining installation directory..." | tee -a ${INSTALL_LOG};
 BASE_DIR="`pwd`";
 
 #################################
@@ -144,8 +144,8 @@ BASE_DIR="`pwd`";
 #################################
 
 INSTALL_LOG=${BASE_DIR}/log/install.log;
-rm -f $INSTALL_LOG;
-touch $INSTALL_LOG;
+rm -f ${INSTALL_LOG};
+mkdir -p "$(dirname ${INSTALL_LOG})" && touch ${INSTALL_LOG};
 
 
 #################################

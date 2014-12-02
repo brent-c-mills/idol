@@ -232,7 +232,7 @@ BASE_DIR=$1;
 LOG_OUT=$2;
 IDOL_NAME=$3;
 
-TEST_DIR=$BASE_DIR/tests;
+TEST_DIR=${BASE_DIR}/tests;
 OUTPUT_DIR=~;
 
 #################################
