@@ -3,17 +3,54 @@
 set -e;
 clear;
 
-#################################
-##         FUNCTIONS!:         ##
-#################################
-
 cancel_install() {
 	echo "Cancelling installation." | tee -a $INSTALL_LOG;
 	echo "For help, please contact brent.c.mills@gmail.com.";
 	exit 1;
 }
 
+check_bats() {
+	if (! echo $PATH | grep "/bats/bin" >> /dev/null); then
+		clear;
+		echo "";
+		echo "	#########################################";
+		echo "	##                                     ##";
+		echo "	##               ALERT!                ##";
+		echo "	##       NO BATS INSTANCE FOUND        ##";
+		echo "	##   WOULD YOU LIKE TO INSTALL ONE?    ##";
+		echo "	##                                     ##";
+		echo "	#########################################";
+		echo "";
+
+		read -p "Please select an option. [Y/N] " -n 1 -r;
+		echo "";
+
+		case "$REPLY" in
+			"Y" | "YES" | "y" | "yes" )
+			    echo "Installing a new copy of BATS...";
+			    install_bats;
+			    ;;
+		    "N" | "NO" | "n" | "no" )
+				cancel_install;
+				;;
+			* )
+			    echo $REPLY" is not a valid option.";
+			    cancel_install;
+			    ;;
+		esac
+	fi
+}
+
+completion() {
+	echo "";
+	echo "Installation completed successfully." | tee -a $INSTALL_LOG;
+	echo "Please log out or reboot before using Idol."
+	exit 0;
+}
+
 install_bats() {
+	clear;
+	echo "";
 	#Check if BATS installation files exist in the idol/bin/bats_current directory.
 	if [ ! -e $BASE_DIR/lib/bats_current/bats_master.tar.gz ]; then
     	echo "BATS installer files not found." | tee -a $INSTALL_LOG;
@@ -65,35 +102,36 @@ install_bats() {
 	echo "BATS was successfully installed to "$BATS_PATH"." | tee -a $INSTALL_LOG;
 }
 
-locate_bats() {
-	read -e -p "Please point us to the base BATS directory (ie: \"/opt/bats\"): " REPLY;
+test_bats_install() {
 	echo "";
+	echo "Testing BATS installation." | tee -a ${INSTALL_LOG};
+	bats ${BATS_PATH}/test/bats.bats | tee -a $INSTALL_LOG;
 
-	#Read the user's selected installation path.
-	if [[ -z $REPLY ]];
-	then
-	    BATS_PATH="/opt/bats";
-	    echo "BATS will be installed in "$BATS_PATH | tee -a $INSTALL_LOG;
-	    exit 0;
-	else
-	    echo "No directory specified." | tee -a $INSTALL_LOG;
-	    cancel_install;
+	if (grep "not ok" ${INSTALL_LOG} >> /dev/null); then
+	        echo "BATS installation failed.  See ./log/install.log for more information.";
+	        cancel_install;
 	fi
 
-	if [[ -e ${BATS_PATH}/bin/bats ]]; then
-        echo "BATS installation found..." | tee -a $INSTALL_LOG;
-        echo "Adding BATS to \$PATH..." | tee -a $INSTALL_LOG;
+}
 
-        #Adding $BATS_PATH/bin/bats to the $PATH.
-        echo "export PATH="${BATS_PATH}/bin/bats:${PATH} >> ~/.bash_profile;
-		source ~/.bash_profile; #works on some systems.
-		. ~/.bash_profile; #works on some systems.
-
-	else
-		echo "Unable to locate the BATS executable at "${BATS_PATH}"/bin/bats." | tee -a $INSTALL_LOG;
+test_idol_install() {
+	echo "";
+	echo "Checking for idol directory structure .bats file." | tee -a $INSTALL_LOG;
+	if [[ ! -e ${BASE_DIR}/lib/idol.bats ]]; then
+		echo "Idol directory structure .bats file could not be found." | tee -a $INSTALL_LOG;
 		cancel_install;
 	fi
+
+	echo "Executing BATS test against idol directory structure." | tee -a $INSTALL_LOG;
+	echo "" | tee -a $INSTALL_LOG;
+	bats $BASE_DIR/lib/idol.bats | tee -a $INSTALL_LOG; 
+
+	if (grep "not ok" ${INSTALL_LOG} >> /dev/null); then
+	        echo "Idol directory structure is not intact.  See ./log/install.log for more information.";
+	        cancel_install;
+	fi
 }
+
 
 #################################
 ##    FIND BASE DIRECTORY:     ##
@@ -113,71 +151,30 @@ touch $INSTALL_LOG;
 #################################
 ##       CHECK FOR BATS:       ##
 #################################
-if (! echo $PATH | grep "/bats/bin" >> /dev/null); then
-	echo "";
-	echo "A BATS install could not be found...";
-	echo "What would you like to do?";
-	echo "";
-	echo "1) Install a new copy of BATS 0.4.0";
-	echo "2) Provide the install location of a current copy of BATS";
-	echo "3) Cancel Installation"
-	echo "";
+BATS_PATH=${BASE_DIR}/bats;
+check_bats;
 
-	read -p "Please select an option... " -n 1 -r;
-	echo "";
-
-	case "$REPLY" in
-		"1" )
-		    echo "Installing a new copy of BATS...";
-		    install_bats;
-		    ;;
-		"2" )
-		    echo "Time to follow the guano!";
-		    locate_bats;
-		    ;;
-	    "3" )
-			cancel_install;
-			;;
-		* )
-		    echo $REPLY" is not a valid option.";
-		    cancel_install;
-		    ;;
-	esac
-fi
+#################################
+##     CHECK BATS INSTALL:     ##
+#################################
+test_bats_install;
 
 
 #################################
 ##  CHECK IDOL FILESTRUCTURE:  ##
 #################################
+test_idol_install;
 
-echo "Checking for idol directory structure .bats file..." | tee -a $INSTALL_LOG;
-if [[ ! -e ${BASE_DIR}/lib/idol.bats ]]; then
-	echo "Idol directory structure .bats file could not be found." | tee -a $INSTALL_LOG;
-	cancel_install;
-fi
-
-echo "Executing BATS test against idol directory structure..." | tee -a $INSTALL_LOG;
-echo "" | tee -a $INSTALL_LOG;
-bats $BASE_DIR/lib/idol.bats | tee -a $INSTALL_LOG; 
-
-if (grep "not ok" ${INSTALL_LOG} >> /dev/null); then
-        echo "Idol directory structure is not intact.  See ./log/install.log for more information.";
-        cancel_install;
-fi
 
 #################################
 ## DEFINE IDOL BASE DIRECTORY  ##
 #################################
-
 sed -i -e "s+PLACEHOLD_BASE_DIR+${BASE_DIR}+g" ${BASE_DIR}/bin/idol;
 
 
 #################################
 ##          EDIT PATH:         ##
 #################################
-
-#Add the idol script to the $PATH.
-
 echo "export PATH="${BASE_DIR}/bin:"\$PATH" >> ~/.bash_profile;
 source ~/.bash_profile; #Works on some systems.
 . ~/.bash_profile; #Works on some systems.
@@ -186,6 +183,4 @@ source ~/.bash_profile; #Works on some systems.
 #################################
 ##          COMPLETION         ##
 #################################
-
-echo "Installation completed successfully." | tee -a $INSTALL_LOG;
-exit 0;
+completion;
