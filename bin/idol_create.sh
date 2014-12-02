@@ -96,4 +96,3 @@ copy_bats_requirements
 #CREATE BATS TESTS BY CATEGORY
 
 create_bats_tests
-
