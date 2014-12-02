@@ -102,6 +102,11 @@ install_bats() {
 	echo "BATS was successfully installed to "$BATS_PATH"." | tee -a $INSTALL_LOG;
 }
 
+install_idol() {
+	mkdir -p ${BASE_DIR}/log;
+	mkdir -p ${BASE_DIR}/tests;
+}
+
 test_bats_install() {
 	echo "";
 	echo "Testing BATS installation." | tee -a ${INSTALL_LOG};
@@ -158,6 +163,12 @@ check_bats;
 ##     CHECK BATS INSTALL:     ##
 #################################
 test_bats_install;
+
+
+#################################
+##  CHECK IDOL FILESTRUCTURE:  ##
+#################################
+install_idol;
 
 
 #################################
