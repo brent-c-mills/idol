@@ -84,13 +84,13 @@ Idol accepts the following commands:
 	Installed Programs (Only alerts if programs are updated or deleted, not if new programs are added)
 	Current Users (and permissions)
 	Current Groups (and permissions)
+	Environment variables
 
 **PLANNED IDOL TESTS:**
 
   Idol will soon support testing for:
   
 	Network configuration
-	Environment variables
 	Hardware configuration
 
 To request other functionality, please contact brent.c.mills@gmail.com or open an issue.
