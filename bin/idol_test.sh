@@ -2,29 +2,55 @@
 
 set -e;
 
+completion() {
+    echo "" | tee -a ${LOG_OUT};
+    echo "idol_test.sh has completed testing for idol "$IDOL_NAME | tee -a ${LOG_OUT};
+    echo "";
+    echo "";
+    echo "____________RESULTS_____________";
+    echo "Tests Run:    "$(grep -c "ok " ${LOG_OUT});
+    echo "Tests Failed: "$(grep -c "not ok " ${LOG_OUT});
+    echo "";
+    if [[ $(grep -c "not ok " ${LOG_OUT}) -ne 0 ]]; then
+    	fail_list_generate;
+    fi
+    exit 0;
+}
+
+fail_list_generate() {
+#This function initially generates a list of failures.
+#It can be adjusted to mail a log server for each failed test.
+
+#OUTPUT TO FILE
+FAIL_LIST=${BASE_DIR}/log/failed.txt;
+rm -f ${FAIL_LIST};
+touch ${FAIL_LIST};
+
+while IFS='--' read -r LINE notused
+do
+        echo $LINE;
+done < <(grep -A 2 "not ok" ${LOG_OUT});
+}
+
+full_bats_test() {
+	bats_category=$1;
+	fullbats="${bats_category}_full.bats";
+
+	echo "** A full bats test for "${IDOL_NAME}" : "${bats_category}" has been triggered." | tee -a ${LOG_OUT};
+	echo "" | tee -a ${LOG_OUT};
+	echo "========================================" | tee -a ${LOG_OUT};
+	echo "Commencing full test for "${fullbats}" on Idol "${IDOL_NAME} | tee -a ${LOG_OUT};
+	echo "" | tee -a ${LOG_OUT};
+	bats $FULL_BATS/${fullbats} | tee -a ${LOG_OUT}
+	echo "" | tee -a ${LOG_OUT};
+	echo "Completed full bats test for "${IDOL_NAME}" : "${bats_category}"." | tee -a ${LOG_OUT};
+}
+
 handoff() {
     echo "idol_test.sh has been kicked off by idol_create.sh..." | tee -a ${LOG_OUT};
     echo "idol_test.sh is initiating hash and full bats tests..." | tee -a ${LOG_OUT};
     echo "idol name:	"$IDOL_NAME | tee -a ${LOG_OUT};
     echo "" | tee -a ${LOG_OUT};
-}
-
-completion() {
-    echo "" | tee -a ${LOG_OUT};
-    echo "idol_test.sh has completed testing for idol "$IDOL_NAME | tee -a ${LOG_OUT};
-    exit 0;
-}
-
-verify_idol() {
-	echo "Verifying Idol "${IDOL_NAME}"..." | tee -a ${LOG_OUT};
-	echo ""  | tee -a ${LOG_OUT};
-	if [[ ! -e ${TEST_DIR}/${IDOL_NAME} ]]; then
-		echo "Idol "${IDOL_NAME}" not found." | tee -a ${LOG_OUT}; 
-		exit 1;
-	else
-		echo "Idol "${IDOL_NAME}" verified." | tee -a ${LOG_OUT}; 
-		echo "Commencing testing..." | tee -a ${LOG_OUT}; 
-	fi
 }
 
 hash_bats_test() {
@@ -44,20 +70,17 @@ hash_bats_test() {
 
 }
 
-full_bats_test() {
-	bats_category=$1;
-	fullbats="${bats_category}_full.bats";
-
-	echo "** A full bats test for "${IDOL_NAME}" : "${bats_category}" has been triggered." | tee -a ${LOG_OUT};
-	echo "" | tee -a ${LOG_OUT};
-	echo "========================================" | tee -a ${LOG_OUT};
-	echo "Commencing full test for "${fullbats}" on Idol "${IDOL_NAME} | tee -a ${LOG_OUT};
-	echo "" | tee -a ${LOG_OUT};
-	bats $FULL_BATS/${fullbats} | tee -a ${LOG_OUT}
-	echo "" | tee -a ${LOG_OUT};
-	echo "Completed full bats test for "${IDOL_NAME}" : "${bats_category}"." | tee -a ${LOG_OUT};
+verify_idol() {
+	echo "Verifying Idol "${IDOL_NAME}"..." | tee -a ${LOG_OUT};
+	echo ""  | tee -a ${LOG_OUT};
+	if [[ ! -e ${TEST_DIR}/${IDOL_NAME} ]]; then
+		echo "Idol "${IDOL_NAME}" not found." | tee -a ${LOG_OUT}; 
+		exit 1;
+	else
+		echo "Idol "${IDOL_NAME}" verified." | tee -a ${LOG_OUT}; 
+		echo "Commencing testing..." | tee -a ${LOG_OUT}; 
+	fi
 }
-
 
 #################################
 ##         READ INPUT:         ##
