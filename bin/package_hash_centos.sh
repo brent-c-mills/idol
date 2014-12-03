@@ -2,24 +2,10 @@
 
 set -e
 
-handoff() {
-    echo "package_hash_centos.sh has been kicked off by idol_create.sh..." | tee -a $LOG_OUT;
-    echo "package_hash_centos.sh is initiating package hash BATS creation..." | tee -a $LOG_OUT;
-    echo "idol name.................."$IDOL_NAME | tee -a $LOG_OUT;
-    echo "" | tee -a $LOG_OUT;
-}
-
 completion() {
-    echo "package_hash_centos.sh has completed for idol "$IDOL_NAME | tee -a $LOG_OUT;
+    echo "package_hash_centos.sh has completed for idol "${IDOL_NAME} | tee -a ${LOG_OUT};
+    echo "Bats Tests Generated: "$(grep -c "@test" ${OUTPUT_BATS});
     exit 0;
-}
-
-initialize_bats() {
-    echo "#!/usr/bin/env bats" >> $OUTPUT_BATS;
-    echo "" >> $OUTPUT_BATS;
-    echo "load test_helper" >> $OUTPUT_BATS;
-    echo "fixtures bats" >> $OUTPUT_BATS;
-    echo "" >> $OUTPUT_BATS;
 }
 
 generate_package_hash() {
@@ -30,28 +16,51 @@ generate_package_hash() {
 }
 
 generate_package_hash_bats() {
-    echo "@test \"SOFTWARE CHECK - "${IDOL_NAME}" Package HASH\" {" >> $OUTPUT_BATS;
-    echo "rpm -qa > /tmp/package_hash.txt" >> $OUTPUT_BATS;
-    echo "HASHCHECK=(\$(md5sum /tmp/package_hash.txt))" >> $OUTPUT_BATS;
-    echo "[ \$HASHCHECK = ${HASHGOLDEN} ]" >> $OUTPUT_BATS;
-    echo "}" >> $OUTPUT_BATS;
-    echo " " >> $OUTPUT_BATS;
+    echo "@test \"SOFTWARE CHECK - "${IDOL_NAME}" Package HASH\" {" >> ${OUTPUT_BATS};
+    echo "rpm -qa > /tmp/package_hash.txt" >> ${OUTPUT_BATS};
+    echo "HASHCHECK=(\$(md5sum /tmp/package_hash.txt))" >> ${OUTPUT_BATS};
+    echo "[ \$HASHCHECK = ${HASHGOLDEN} ]" >> ${OUTPUT_BATS};
+    echo "}" >> ${OUTPUT_BATS};
+    echo " " >> ${OUTPUT_BATS};
 }
 
+handoff() {
+    echo "package_hash_centos.sh has been kicked off by idol_create.sh..." | tee -a ${LOG_OUT};
+    echo "package_hash_centos.sh is initiating package hash BATS creation..." | tee -a ${LOG_OUT};
+    echo "idol name.................."${IDOL_NAME} | tee -a ${LOG_OUT};
+    echo "" | tee -a ${LOG_OUT};
+}
 
+initialize_bats() {
+    echo "#!/usr/bin/env bats" >> ${OUTPUT_BATS};
+    echo "" >> ${OUTPUT_BATS};
+    echo "load test_helper" >> ${OUTPUT_BATS};
+    echo "fixtures bats" >> ${OUTPUT_BATS};
+    echo "" >> ${OUTPUT_BATS};
+}
+
+#################################
+##     INPUT AND VARIABLES     ##
+#################################
 HASH_BATS=$1;
 IDOL_NAME=$2;
 LOG_OUT=$3;
 
-OUTPUT_BATS=$HASH_BATS/package_hash.bats;
+OUTPUT_BATS=${HASH_BATS}/package_hash.bats;
 
-#Acknowledge handoff...
+#################################
+##     ACKNOWLEDGE HANDOFF     ##
+#################################
 handoff;
 
-#Initialize bats and generate package list / package bats.
+#################################
+##         CREATE BATS         ##
+#################################
 initialize_bats;
 HASHGOLDEN=$(generate_package_hash);
 generate_package_hash_bats;
 
-#Acknowledge completion of BATS generation.
+#################################
+##   ACKNOWLEDGE COMPLETION    ##
+#################################
 completion;
