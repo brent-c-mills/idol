@@ -11,6 +11,8 @@ completion() {
     echo "Tests Run:    "$(grep -c "ok " ${LOG_OUT});
     echo "Tests Failed: "$(grep -c "not ok " ${LOG_OUT});
     echo "";
+    echo "Failed tests are stored in "${FAIL_LIST}".";
+    echo "";
     if [[ $(grep -c "not ok " ${LOG_OUT}) -ne 0 ]]; then
     	fail_list_generate;
     fi
@@ -40,11 +42,13 @@ done;
 #
 #FAIL_EMAIL=/tmp/fail_email.txt;
 #SUBJECT="IDOL TEST FAILURE"
-#EMAIL="admin@somewhere.com"
-#
+#EMAIL="admin@company.com"
+
 #for (( i=1; i<=${FAIL_COUNT}; i++ )); do
+#	rm -f ${FAIL_EMAIL};
+#	touch ${FAIL_EMAIL};
 #    grep -m${i} -A2 "not ok" ${LOG_OUT} | tail -n3 >> ${FAIL_EMAIL};
-#	/bin/mail -a "${SUBJECT}" "${EMAIL}" < "${FAIL_EMAIL}";
+#	/bin/mail -s "${SUBJECT}" "${EMAIL}" < "${FAIL_EMAIL}";
 #done;
 
 }
