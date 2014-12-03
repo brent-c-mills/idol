@@ -10,7 +10,7 @@ completion() {
 
 generate_environment_full_bats() {
 
-    ENV_COMPONENT=( "/etc/crontab" "/etc/shells" "/etc/fstab" "/etc/mtab" "/etc/rpc" "/etc/services" "/etc/sestatus.conf" "/etc/nsswitch.conf" "/etc/profile" "/etc/protocols" "/etc/hosts" "/etc/hosts.allow" "/etc/hosts.deny" "/etc/inittab" "/etc/yum.conf" "/etc/ssh/ssh_config" "/etc/sysconfig/authconfig" "/etc/sysconfig/grub" "/etc/yum.repos.d"/* );
+    ENV_COMPONENT=( "/etc/crontab" "/etc/shells" "/etc/fstab" "/etc/mtab" "/etc/rpc" "/etc/sestatus.conf" "/etc/nsswitch.conf" "/etc/profile" "/etc/protocols" "/etc/hosts" "/etc/hosts.allow" "/etc/hosts.deny" "/etc/inittab" "/etc/yum.conf" "/etc/ssh/ssh_config" "/etc/sysconfig/authconfig" "/etc/sysconfig/grub" "/etc/yum.repos.d"/* );
 
     for i in ${ENV_COMPONENT[@]}; do
         while read -r LINE || [[ -n $LINE ]]; do

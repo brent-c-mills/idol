@@ -24,9 +24,13 @@ fail_list_generate() {
 #It can be adjusted to mail a log server for each failed test.
 
 #OUTPUT TO FILE
-FAIL_LIST=${BASE_DIR}/log/failed.txt;
 rm -f ${FAIL_LIST};
 touch ${FAIL_LIST};
+echo "TESTS RUN: "$(date +"%m_%d_%Y_%H%M") >> ${FAIL_LIST};
+echo "" >> ${FAIL_LIST};
+echo "" >> ${FAIL_LIST};
+echo "========================================" >> ${FAIL_LIST};
+
 FAIL_COUNT=$(grep -c "not ok" ${LOG_OUT});
 
 for (( i=1; i<=${FAIL_COUNT}; i++ )); do
@@ -129,6 +133,7 @@ TEST_DIR=${BASE_DIR}/tests;
 IDOL_DIR=${TEST_DIR}/${IDOL_NAME};
 FULL_BATS=${IDOL_DIR}/full_bats;
 HASH_BATS=${IDOL_DIR}/hash_bats;
+FAIL_LIST=${BASE_DIR}/log/failed.txt;
 
 #################################
 ##       ACCEPT HANDOFF        ##
