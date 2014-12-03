@@ -10,13 +10,13 @@ completion() {
 
 generate_environment_full_bats() {
 
-    ENV_COMPONENT=( "/etc/crontab" "/etc/shells" "/etc/fstab" "/etc/mtab" "/etc/rpc" "/etc/services" "/etc/sestatus.conf" "/etc/nsswitch.conf" "/etc/profile" "/etc/protocols" "/etc/hosts" "/etc/hosts.allow" "/etc/hosts.deny" "/etc/inittab" "/etc/yum.conf" "/etc/ssh/ssh_config" "/etc/ssh/sshd_config" "/etc/sysconfig/authconfig" "/etc/sysconfig/grub" "/etc/sysconfig/system-config-firewall" "/etc/sudoers" "/etc/yum.repos.d"/* );
+    ENV_COMPONENT=( "/etc/crontab" "/etc/shells" "/etc/fstab" "/etc/mtab" "/etc/rpc" "/etc/services" "/etc/sestatus.conf" "/etc/nsswitch.conf" "/etc/profile" "/etc/protocols" "/etc/hosts" "/etc/hosts.allow" "/etc/hosts.deny" "/etc/inittab" "/etc/yum.conf" "/etc/ssh/ssh_config" "/etc/sysconfig/authconfig" "/etc/sysconfig/grub" "/etc/yum.repos.d"/* );
 
     for i in ${ENV_COMPONENT[@]}; do
         while read -r LINE || [[ -n $LINE ]]; do
             IFS=' ' read -a array <<< ${LINE};
 
-            if [[ ${array[0]} ]] && [[ ! ${array[0]} =~ \# ]] && [[ ! ${LINE} =~ \[ ]]; then
+            if [[ ${array[0]} ]] && [[ ! ${array[0]} =~ \# ]] && [[ ! ${LINE} =~ \[ ]] && [[ ! ${LINE} =~ \` ]]; then
                 echo "@test \"ENVIRONMENT CHECK - "${array[0]}" Environment FULL\" {" >> ${OUTPUT_BATS};
                 echo "grep '""${LINE}""' "${i} >> ${OUTPUT_BATS};
                 echo "}" >> ${OUTPUT_BATS};
