@@ -38,6 +38,10 @@ idol
 
 Idol sits on top of BATS (https://github.com/sstephenson/bats).  Idol creates and stores Idols (Golden Images) --> ( A Golden Bat == an Idol!  Get it? ).  Future systems can be tested against these Idols to check compliance to the golden image / golden standard for a given system.
 
+Idol generates bats tests around users, groups, installed software, and environment variables.  Within each of these categories, two types of tests are generated; hash tests and full tests.  1x Hash test is generated for each category.  By default, hash tests are the only tests that are run.  However, if anything in a given category changes (including comments in files), the hash test will fail and a full test will be launched for that category.  Full tests do not test comments in files - as a result, it is possible for a hash test to fail, but all full tests for that category to pass.
+
+This Hash and Full approach is taken in order to save time during testing while still allowing a full system test via BATS.
+
 
 **INSTALLATION:**
 
@@ -76,6 +80,12 @@ Idol accepts the following commands:
 		Idol first attempts hash matches.  Failing this, it runs a full battery of tests.  
 		This saves time over traditional BATS workflow.
 	Import:  Import a packaged Idol from a remote instance into your Idol instance.
+
+	Idol currently outputs a RESULTS section which outlines the total number of tests run and the total number of tests failed.  It then generates a failed list in the log directory in order to record failed tests.
+
+**PLANNED FUNCTIONALITY:**
+	
+	Idol will soon provide the ability to output failed tests one at a time to a log server via email.  If "Idol --test ${IDOL_NAME}" is run at boot, this will allow for boot-time validation and monitoring of system configs against a golden standard.
 
 **CURRENT IDOL TESTS:**
 
