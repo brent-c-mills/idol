@@ -60,7 +60,7 @@ LOG_OUT=$3;
 
 OUTPUT_BATS=$HASH_BATS/environment_hash.bats;
 
-ENV_COMPONENT=( "/etc/crontab" "/etc/shells" "/etc/fstab" "/etc/hosts" "/etc/hosts.allow" "/etc/hosts.deny" "/etc/inittab" "/etc/yum.repos.d"/* );
+ENV_COMPONENT=( "/etc/crontab" "/etc/shells" "/etc/fstab" "/etc/mtab" "/etc/rpc" "/etc/services" "/etc/sestatus.conf" "/etc/nsswitch.conf" "/etc/profile" "/etc/protocols" "/etc/hosts" "/etc/hosts.allow" "/etc/hosts.deny" "/etc/inittab" "/etc/yum.conf" "/etc/ssh/ssh_config" "/etc/ssh/sshd_config" "/etc/sysconfig/authconfig" "/etc/sysconfig/grub" "/etc/sysconfig/system-config-firewall" "/etc/sudoers" "/etc/yum.repos.d"/* );
     #Need to add back "/var/spool/cron"/* .  This wasn't working in the above array.
 
 #################################
