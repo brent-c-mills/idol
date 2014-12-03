@@ -25,20 +25,14 @@ fail_list_generate() {
 FAIL_LIST=${BASE_DIR}/log/failed.txt;
 rm -f ${FAIL_LIST};
 touch ${FAIL_LIST};
+FAIL_COUNT=$(grep -c "not ok" ${LOG_OUT});
 
-while IFS='' read -r LINE notused
-do
-	echo "========================================" >> ${FAIL_LIST};
-	echo "" >> ${FAIL_LIST};
-
- 	while IFS='--' read -r LINE notused
-	do
-		echo ${LINE} >> ${FAIL_LIST};
-	done < <(grep -A 2 "not ok" ${LOG_OUT});
-
-	echo "" >> ${FAIL_LIST};
-
-done < <(grep "not ok" ${LOG_OUT});
+for (( i=1; i<=${FAIL_COUNT}; i++ )); do
+    echo "" >> ${FAIL_LIST};
+    grep -m${i} -A2 "not ok" ${LOG_OUT} | tail -n3 >> ${FAIL_LIST};
+    echo "" >> ${FAIL_LIST};
+    echo "========================================" >> ${FAIL_LIST};
+done;
 
 #OUTPUT TO EMAIL
 #Uncommend and update below data for email logging
@@ -47,19 +41,11 @@ done < <(grep "not ok" ${LOG_OUT});
 #FAIL_EMAIL=/tmp/fail_email.txt;
 #SUBJECT="IDOL TEST FAILURE"
 #EMAIL="admin@somewhere.com"
-
-#while IFS='' read -r LINE notused
-#	rm -f ${FAIL_EMAIL};
-#	touch ${FAIL_EMAIL};
 #
-#	while IFS='--' read -r LINE notused
-#	do
-#		echo ${LINE} >> ${FAIL_EMAIL};
-#	done < <(grep -A 2 "not ok" ${LOG_OUT});
-#
+#for (( i=1; i<=${FAIL_COUNT}; i++ )); do
+#    grep -m${i} -A2 "not ok" ${LOG_OUT} | tail -n3 >> ${FAIL_EMAIL};
 #	/bin/mail -a "${SUBJECT}" "${EMAIL}" < "${FAIL_EMAIL}";
-#
-#done < <(grep "not ok" ${LOG_OUT});
+#done;
 
 }
 
