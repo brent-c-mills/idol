@@ -40,21 +40,24 @@ while IFS='' read -r LINE notused
 done < <(grep "not ok" ${LOG_OUT});
 
 #OUTPUT TO EMAIL
-#FAIL_LIST=${BASE_DIR}/log/failed.txt;
-#rm -f ${FAIL_LIST};
-#touch ${FAIL_LIST};
+#Uncommend and update below data for email logging
+#__________________________________________________
+#
+#FAIL_EMAIL=/tmp/fail_email.txt;
+#SUBJECT="IDOL TEST FAILURE"
+#EMAIL="admin@somewhere.com"
 
 #while IFS='' read -r LINE notused
-#	echo "========================================" | tee -a ${FAIL_LIST};
-#	echo "" | tee -a ${FAIL_LIST};
+#	rm -f ${FAIL_EMAIL};
+#	touch ${FAIL_EMAIL};
 #
 #	while IFS='--' read -r LINE notused
 #	do
-#		echo ${LINE} >> ${FAIL_LIST};
+#		echo ${LINE} >> ${FAIL_EMAIL};
 #	done < <(grep -A 2 "not ok" ${LOG_OUT});
 #
-#	echo "" | tee -a ${FAIL_LIST};
-#	echo "========================================" | tee -a ${FAIL_LIST};
+#	/bin/mail -a "${SUBJECT}" "${EMAIL}" < "${FAIL_EMAIL}";
+#
 #done < <(grep "not ok" ${LOG_OUT});
 
 }
