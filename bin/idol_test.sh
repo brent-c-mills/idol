@@ -28,16 +28,15 @@ touch ${FAIL_LIST};
 
 while IFS='' read -r LINE notused
 do
-	echo "========================================" | tee -a ${FAIL_LIST};
-	echo "" | tee -a ${FAIL_LIST};
+	echo "========================================" >> ${FAIL_LIST};
+	echo "" >> ${FAIL_LIST};
 
  	while IFS='--' read -r LINE notused
 	do
 		echo ${LINE} >> ${FAIL_LIST};
 	done < <(grep -A 2 "not ok" ${LOG_OUT});
 
-	echo "" | tee -a ${FAIL_LIST};
-	echo "========================================" | tee -a ${FAIL_LIST};
+	echo "" >> ${FAIL_LIST};
 
 done < <(grep "not ok" ${LOG_OUT});
 
