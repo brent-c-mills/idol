@@ -95,6 +95,9 @@ Idol accepts the following commands:
 	Current Users (and permissions)
 	Current Groups (and permissions)
 	Environment variables
+	Ruby Gems (If Ruby is installed)
+	Chef Cookbooks (If Chef is installed)
+	Chef Recipes (If Chef is installed)
 
 **PLANNED IDOL TESTS:**
 
