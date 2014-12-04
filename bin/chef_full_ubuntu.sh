@@ -15,7 +15,7 @@ generate_chef_cookbook_bats() {
 
         echo "Adding chef_full test for cookbook "${COOKBOOK} >> ${LOG_OUT};
         echo "@test \"CHEF CHECK - cookbook "${COOKBOOK}"\" {" >> ${OUTPUT_BATS};
-        echo "knife cookbook list | grep \""${COOKBOOK}"\"" >> ${OUTPUT_BATS};
+        echo "knife cookbook list | grep '""${COOKBOOK}""'" >> ${OUTPUT_BATS};
         echo "[ \$? -eq 0 ]" >> ${OUTPUT_BATS};
         echo "}" >> ${OUTPUT_BATS};
         echo " " >> ${OUTPUT_BATS};
@@ -31,7 +31,7 @@ generate_chef_recipe_bats() {
 
         echo "Adding chef_full test for recipe "${RECIPE} >> ${LOG_OUT};
         echo "@test \"CHEF CHECK - recipe "${RECIPE}"\" {" >> ${OUTPUT_BATS};
-        echo "knife recipe list | grep \""${RECIPE}"\"" >> ${OUTPUT_BATS};
+        echo "knife recipe list | grep '""${RECIPE}""'" >> ${OUTPUT_BATS};
         echo "[ \$? -eq 0 ]" >> ${OUTPUT_BATS};
         echo "}" >> ${OUTPUT_BATS};
         echo " " >> ${OUTPUT_BATS};
