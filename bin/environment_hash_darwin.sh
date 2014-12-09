@@ -25,11 +25,19 @@ generate_environment_hash() {
 
 generate_environment_hash_bats() {
     echo "@test \"ENVIRONMENT CHECK - "${IDOL_NAME}" Environment HASH\" {" >> ${OUTPUT_BATS};
-    echo "ls /Applications/ > /tmp/environment_hash.txt" >> ${OUTPUT_BATS};
+
+    for i in "${ENV_COMPONENT[@]}"
+    do
+            echo "cat "${i}" >> /tmp/environment_hash.txt" >> ${OUTPUT_BATS};
+            echo "echo \"\" >> /tmp/environment_hash.txt" >> ${OUTPUT_BATS};
+            echo "echo \"\" >> /tmp/environment_hash.txt" >> ${OUTPUT_BATS};
+    done
+
     echo "HASHCHECK=\$(md5 /tmp/environment_hash.txt | awk '{ print \$4 }')" >> ${OUTPUT_BATS};
-    echo "[ \$HASHCHECK = ${HASHGOLDEN} ]" >> ${OUTPUT_BATS};
+    echo "[ \$HASHCHECK = "${HASHGOLDEN}" ]" >> ${OUTPUT_BATS};
     echo "}" >> ${OUTPUT_BATS};
     echo " " >> ${OUTPUT_BATS};
+    rm -f /tmp/environment_hash.txt;
 }
 
 handoff() {
