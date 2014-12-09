@@ -19,7 +19,7 @@ generate_gem_hash() {
 generate_gem_hash_bats() {
     echo "@test \"RUBY GEM CHECK - "${IDOL_NAME}" HASH\" {" >> ${OUTPUT_BATS};
     echo "gem list --local > /tmp/gem_hash.txt" >> ${OUTPUT_BATS};
-    echo "HASHCHECK=(\$(md5 /tmp/gem_hash.txt | awk '{ print $4 }'))" >> ${OUTPUT_BATS};
+    echo "HASHCHECK=(\$(md5 /tmp/gem_hash.txt | awk '{ print \$4 }'))" >> ${OUTPUT_BATS};
     echo "[ \$HASHCHECK = ${HASHGOLDEN} ]" >> ${OUTPUT_BATS};
     echo "}" >> ${OUTPUT_BATS};
     echo " " >> ${OUTPUT_BATS};

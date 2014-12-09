@@ -21,7 +21,7 @@ generate_chef_hash_bats() {
     echo "@test \"CHEF CHECK - "${IDOL_NAME}" HASH\" {" >> ${OUTPUT_BATS};
     echo "knife cookbook list >> /tmp/chef_hash.txt" >> ${OUTPUT_BATS};
     echo "knife recipe list >> /tmp/chef_hash.txt" >> ${OUTPUT_BATS};
-    echo "HASHCHECK=(\$(md5 /tmp/chef_hash.txt | awk '{ print $4 }'))" >> ${OUTPUT_BATS};
+    echo "HASHCHECK=(\$(md5 /tmp/chef_hash.txt | awk '{ print \$4 }'))" >> ${OUTPUT_BATS};
     echo "[ \$HASHCHECK = ${HASHGOLDEN} ]" >> ${OUTPUT_BATS};
     echo "}" >> ${OUTPUT_BATS};
     echo " " >> ${OUTPUT_BATS};

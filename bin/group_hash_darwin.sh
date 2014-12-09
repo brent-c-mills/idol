@@ -19,7 +19,7 @@ generate_group_hash() {
 generate_group_hash_bats() {
     echo "@test \"GROUP CHECK - "${IDOL_NAME}" group HASH\" {" >> ${OUTPUT_BATS};
     echo "cat /etc/group > /tmp/group_hash.txt" >> ${OUTPUT_BATS};
-    echo "HASHCHECK=\$(md5 /tmp/group_hash.txt | awk '{ print $4 }')" >> ${OUTPUT_BATS};
+    echo "HASHCHECK=\$(md5 /tmp/group_hash.txt | awk '{ print \$4 }')" >> ${OUTPUT_BATS};
     echo "[ \$HASHCHECK = ${HASHGOLDEN} ]" >> ${OUTPUT_BATS};
     echo "}" >> ${OUTPUT_BATS};
     echo " " >> ${OUTPUT_BATS};

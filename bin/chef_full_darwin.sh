@@ -15,7 +15,7 @@ generate_chef_cookbook_bats() {
 
         echo "Adding chef_full test for cookbook "${COOKBOOK} >> ${LOG_OUT};
         echo "@test \"CHEF CHECK - cookbook "${COOKBOOK}"\" {" >> ${OUTPUT_BATS};
-        echo "knife cookbook list | grep '""${COOKBOOK}""'" >> ${OUTPUT_BATS};
+        echo "grep '""${COOKBOOK}""' "${COOKBOOKS} >> ${OUTPUT_BATS};
         echo "[ \$? -eq 0 ]" >> ${OUTPUT_BATS};
         echo "}" >> ${OUTPUT_BATS};
         echo " " >> ${OUTPUT_BATS};
@@ -31,7 +31,7 @@ generate_chef_recipe_bats() {
 
         echo "Adding chef_full test for recipe "${RECIPE} >> ${LOG_OUT};
         echo "@test \"CHEF CHECK - recipe "${RECIPE}"\" {" >> ${OUTPUT_BATS};
-        echo "knife recipe list | grep '""${RECIPE}""'" >> ${OUTPUT_BATS};
+        echo "grep '""${RECIPE}""' "${RECIPES} >> ${OUTPUT_BATS};
         echo "[ \$? -eq 0 ]" >> ${OUTPUT_BATS};
         echo "}" >> ${OUTPUT_BATS};
         echo " " >> ${OUTPUT_BATS};
@@ -63,6 +63,8 @@ initialize_bats() {
     echo "load test_helper" >> ${OUTPUT_BATS};
     echo "fixtures bats" >> ${OUTPUT_BATS};
     echo "" >> ${OUTPUT_BATS};
+    echo "rm -f "${COOKBOOKS}" && touch "${COOKBOOKS} >> ${OUTPUT_BATS};
+    echo "rm -f "${RECIPES}" && touch "${RECIPES} >> ${OUTPUT_BATS};
 }
 
 skip() {
@@ -82,6 +84,8 @@ verify_chef() {
 FULL_BATS=$1;
 IDOL_NAME=$2;
 LOG_OUT=$3;
+COOKBOOKS=/tmp/chef_cookbook.txt
+RECIPES=/tmp/chef_recipes.txt
 
 OUTPUT_BATS=${FULL_BATS}/chef_full.bats;
 
