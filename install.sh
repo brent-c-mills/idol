@@ -90,7 +90,7 @@ install_bats() {
 	tar -zxvf $BASE_DIR/lib/bats_current/bats_master.tar.gz -C $BATS_PATH/;
 	#Verify that BATS files were successfully expanded into installation directory.
 	if [[ $? -ne 0 ]]; then
-    	echo "Unable expand BATS files into "$BATS_PATH | tee -a $INSTALL_LOG;
+    	echo "Unable to expand BATS files into "$BATS_PATH | tee -a $INSTALL_LOG;
     	cancel_install;
 	fi
 

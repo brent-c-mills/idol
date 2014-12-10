@@ -51,6 +51,16 @@ verify_chef() {
     if [[ ! $(chef -v 2> /dev/null) ]]; then
         skip;
     fi
+
+    if [[ $(`knife list recipe 2> /dev/null`) != 0 ]]; then
+        echo "Chef has encountered an error.  Skipping Chef full BATS generation..." | tee -a ${LOG_OUT};
+        skip;
+    fi
+
+    if [[ $(`knife list recipe 2> /dev/null`) != 0 ]]; then
+        echo "Chef has encountered an error.  Skipping Chef full BATS generation..." | tee -a ${LOG_OUT};
+        skip;
+    fi
 }
 
 #################################
