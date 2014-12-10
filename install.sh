@@ -108,15 +108,16 @@ install_idol() {
 }
 
 test_bats_install() {
-	echo "";
-	echo "Testing BATS installation." | tee -a ${INSTALL_LOG};
-	bats ${BATS_PATH}/test/bats.bats | tee -a $INSTALL_LOG;
+	if [[ "$(uname)" -ne "Darwin" ]]; then
+		echo "";
+		echo "Testing BATS installation." | tee -a ${INSTALL_LOG};
+		bats ${BATS_PATH}/test/bats.bats | tee -a $INSTALL_LOG;
 
-	if (grep "not ok" ${INSTALL_LOG} >> /dev/null); then
-	        echo "BATS installation failed.  See ./log/install.log for more information.";
-	        cancel_install;
+		if (grep "not ok" ${INSTALL_LOG} >> /dev/null); then
+		        echo "BATS installation failed.  See ./log/install.log for more information.";
+		        cancel_install;
+		fi
 	fi
-
 }
 
 test_idol_install() {
