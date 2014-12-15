@@ -1,20 +1,4 @@
 
-
-
-                     _..-'(                       )`-.._
-                  ./'. '||\\.       /\__/\       .//||` .`\.
-               ./'.|'.'||||\\|..    ||||||    ..|//||||`.`|.`\.
-            ./'..|'.|| |||||\`````` '||||` ''''''/||||| ||.`|..`\.       
-          ./'.||'.|||| ||||||||||||.||||||.|||||||||||| ||||.`||.`\.     
-         /'|||'.|||||| |||||| |||||{||||||}||||| |||||| ||||||.`|||`\    
-        '.|||'.||||||| ||||||||||||{||||||}|||||||||||| |||||||.`|||.`  
-       '.||| ||||||||| |/'   ``\||``||||||''||/''   `\| ||||||||| |||.`
-       |/' \./'     `\./         \!|\||||/|!/         \./'     `\./ `\|  
-       V    V         V          }' `\||/' `{          V         V    V
-       `    `         `               \/               '         '    '
-
-
-
 	 ___ ___   ___  _      _       ___  ___  _    ___  ___ _  _   ___   _ _____ 
 	|_ _|   \ / _ \| |    (_)     / __|/ _ \| |  |   \| __| \| | | _ ) /_\_   _|
 	 | || |) | (_) | |__   _     | (_ | (_) | |__| |) | _|| .` | | _ \/ _ \| |  
@@ -33,6 +17,13 @@
 idol
 ====
 
+Idol provides functionality above and beyond what BATS provides on its own.
+
+* OS detection and OS-based test customization
+* Dual-layer Hash / Full test framework - this saves time if all items in a category match the baseline
+* Automated BATS test generation across Ubuntu/Debian, Cent/RHEL/Fedora, and Darwin/OS X
+* Simultaneous storage for multiple IDOLs (multiple golden standards) with built-in export and import functionality
+* Ability to list and pick which IDOL to test at run time
 
 **DESCRIPTION:**
 
