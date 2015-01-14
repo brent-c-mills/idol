@@ -2,6 +2,9 @@
 
 set -e
 
+#################################
+##          FUNCTIONS          ##
+#################################
 
 
 
@@ -50,22 +53,6 @@ update_idol_readme;
 #COPY NEEDED FILES INTO SERVERSPEC DIRECTORY...
 
 copy_serverspec_requirements;
-
-#CREATE VAGRANT VM && RUN KITCHEN
-
-run_kitchen_converge;
-
-#CREATE SERVERSPEC TESTS
-
-create_serverspec_tests;
-
-#VERIFY SERVERSPEC TESTS
-
-verify_serverspec_tests;
-
-#DESTROY KITCHEN
-
-run_kitchen_destroy;
 
 #COMPLETION
 
