@@ -34,7 +34,9 @@ describe_spec() {
 }
 
 read_all_files() {
-	file_count=$(sudo find /etc/ -maxdepth 2 -name *.conf > /tmp/conf_files && wc -l /tmp/conf_files | awk '{ print $1 }');
+	sudo find /etc/ -maxdepth 2 -name *.conf > /tmp/conf_files;
+	sudo find /etc/ -maxdepth 3 -name *.cfg >> /tmp/conf_files;
+	file_count=$( wc -l /tmp/conf_files | awk '{ print $1 }');
 	echo "File Count is: "${file_count};
 
 	for (( i=1; i<=${file_count}; i++ )); do

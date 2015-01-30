@@ -29,6 +29,8 @@ IDOL_SPEC_NAME=$2;
 BASE_DIR=$3;
 LOG_OUT=$4;
 
+
+
 NOW=$(date +"%m_%d_%Y_%H%M%S");
 BIN_DIR=$BASE_DIR/bin;
 LIB_DIR=$BASE_DIR/lib;

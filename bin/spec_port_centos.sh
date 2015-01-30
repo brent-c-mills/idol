@@ -29,19 +29,39 @@ describe_spec() {
 	echo "" >> ${spec_test};
 }
 
-read_all_ports() {
-	port_count=$(sudo netstat -plnt --tcp | tail -n +3 >> /tmp/port && wc -l /tmp/port | awk '{ print $1 }');
-	echo "Listening Port Count is: "${port_count};
+read_all_ports_tcp() {
+	tcp_port_count=$(sudo netstat -plnt --tcp | tail -n +3 >> /tmp/port && wc -l /tmp/port | awk '{ print $1 }');
+	echo "Listening TCP Port Count is: "${tcp_port_count};
 
-	for (( i=1; i<=${port_count}; i++ )); do
-		read_individual_port;
+	for (( i=1; i<=${tcp_port_count}; i++ )); do
+		read_individual_port_tcp;
 	done;
 
 	rm /tmp/port;
 }
 
-read_individual_port() {
-	local service_name=$(sed "${i}q;d" /tmp/port | awk '{ print $7 }');
+read_all_ports_udp() {
+	udp_port_count=$(sudo netstat -plnt --udp | tail -n +3 >> /tmp/port && wc -l /tmp/port | awk '{ print $1 }');
+	echo "Listening UDP Port Count is: "${udp_port_count};
+
+	for (( i=1; i<=${udp_port_count}; i++ )); do
+		read_individual_port_udp;
+	done;
+
+#	rm /tmp/port;
+}
+
+read_individual_port_tcp() {
+	local service_name=$(sed "${i}q;d" /tmp/port | awk 'NF>1{print $NF}');
+	local service_name=${service_name##*/};
+	local service_port=$(sed "${i}q;d" /tmp/port | awk '{ print $4 }');
+	local service_port=${service_port##*:};
+
+	describe_spec ${service_name} ${service_port};
+}
+
+read_individual_port_udp() {
+	local service_name=$(sed "${i}q;d" /tmp/port | awk 'NF>1{print $NF}');
 	local service_name=${service_name##*/};
 	local service_port=$(sed "${i}q;d" /tmp/port | awk '{ print $4 }');
 	local service_port=${service_port##*:};
@@ -59,4 +79,5 @@ spec_test="${serverspec_dir}/port_spec.rb";
 ##      CREATE SPEC TESTS      ##
 #################################
 create_spec_test;
-read_all_ports;
+read_all_ports_tcp;
+read_all_ports_udp;

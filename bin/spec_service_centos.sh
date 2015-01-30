@@ -45,7 +45,7 @@ describe_spec() {
 }
 
 read_all_services() {
-	service_count=$(chkconfig > /tmp/services && wc -l /tmp/services | awk '{ print $1 }');
+	service_count=$(sudo chkconfig > /tmp/services && wc -l /tmp/services | awk '{ print $1 }');
 	echo "Service Count is: "${service_count};
 
 	for (( i=1; i<=${service_count}; i++ )); do
