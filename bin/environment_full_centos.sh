@@ -3,7 +3,7 @@
 set -e
 
 completion() {
-    echo "environment_full_centos.sh has completed for idol "${IDOL_NAME} | tee -a ${LOG_OUT};
+    echo "environment_full_centos.sh has completed for idol "${IDOL_NAME} | tee -a ${CURRENT_LOG};
     echo "Bats Tests Generated: "$(grep -c "@test" ${OUTPUT_BATS});
     exit 0;
 }
@@ -28,10 +28,10 @@ generate_environment_full_bats() {
 }
 
 handoff() {
-    echo "environment_full_centos.sh has been kicked off by idol_create.sh..." | tee -a ${LOG_OUT};
-    echo "environment_full_centos.sh is initiating full environment BATS creation..." | tee -a ${LOG_OUT};
-    echo "idol name.................."${IDOL_NAME} | tee -a ${LOG_OUT};
-    echo "" | tee -a ${LOG_OUT};
+    echo "environment_full_centos.sh has been kicked off by idol_create.sh..." | tee -a ${CURRENT_LOG};
+    echo "environment_full_centos.sh is initiating full environment BATS creation..." | tee -a ${CURRENT_LOG};
+    echo "idol name.................."${IDOL_NAME} | tee -a ${CURRENT_LOG};
+    echo "" | tee -a ${CURRENT_LOG};
 }
 
 initialize_bats() {
@@ -47,7 +47,7 @@ initialize_bats() {
 #################################
 HASH_BATS=$1;
 IDOL_NAME=$2;
-LOG_OUT=$3;
+CURRENT_LOG=$3;
 
 OUTPUT_BATS=${HASH_BATS}/environment_full.bats;
 

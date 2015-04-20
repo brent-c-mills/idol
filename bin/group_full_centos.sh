@@ -3,7 +3,7 @@
 set -e
 
 completion() {
-    echo "group_full_centos.sh has completed for idol "${IDOL_NAME} | tee -a ${LOG_OUT};
+    echo "group_full_centos.sh has completed for idol "${IDOL_NAME} | tee -a ${CURRENT_LOG};
     echo "Bats Tests Generated: "$(grep -c "@test" ${OUTPUT_BATS});
     exit 0;
 }
@@ -14,7 +14,7 @@ generate_group_bats() {
         groupname=$(echo ${group} | cut -d: -f1);
         group=${group};
 
-        echo "Adding group_full test for "${groupname} >> ${LOG_OUT};
+        echo "Adding group_full test for "${groupname} >> ${CURRENT_LOG};
         echo "@test \"GROUP CHECK - "${groupname}"\" {" >> ${OUTPUT_BATS};
         echo "cat /etc/group | grep \""${group}"\"" >> ${OUTPUT_BATS};
         echo "[ \$? -eq 0 ]" >> ${OUTPUT_BATS};
@@ -25,16 +25,16 @@ generate_group_bats() {
 }
 
 generate_group_list() {
-    echo "Generating group Golden List for "${IDOL_NAME} >> ${LOG_OUT};
+    echo "Generating group Golden List for "${IDOL_NAME} >> ${CURRENT_LOG};
     rm -f /tmp/group_full.txt && touch /tmp/group_full.txt;
     cat /etc/group >> /tmp/group_full.txt;
 }
 
 handoff() {
-    echo "group_full_centos.sh has been kicked off by idol_create.sh..." | tee -a ${LOG_OUT};
-    echo "group_full_centos.sh is initiating full group BATS creation..." | tee -a ${LOG_OUT};
-    echo "idol name.................."${IDOL_NAME} | tee -a ${LOG_OUT};
-    echo "" | tee -a ${LOG_OUT};
+    echo "group_full_centos.sh has been kicked off by idol_create.sh..." | tee -a ${CURRENT_LOG};
+    echo "group_full_centos.sh is initiating full group BATS creation..." | tee -a ${CURRENT_LOG};
+    echo "idol name.................."${IDOL_NAME} | tee -a ${CURRENT_LOG};
+    echo "" | tee -a ${CURRENT_LOG};
 }
 
 initialize_bats() {
@@ -50,7 +50,7 @@ initialize_bats() {
 #################################
 FULL_BATS=$1;
 IDOL_NAME=$2;
-LOG_OUT=$3;
+CURRENT_LOG=$3;
 
 OUTPUT_BATS=${FULL_BATS}/group_full.bats;
 

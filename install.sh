@@ -143,6 +143,11 @@ test_idol_install() {
 #################################
 echo "Determining installation directory..." | tee -a ${INSTALL_LOG};
 BASE_DIR="`pwd`";
+BIN_DIR=${BASE_DIR}/bin;
+LIB_DIR=${BASE_DIR}/lib;
+LOG_DIR=${BASE_DIR}/log;
+TEST_DIR=${BASE_DIR}/tests;
+MAN_DIR=${BASE_DIR}/man;
 
 #################################
 ##     CREATE INSTALL LOG:     ##
@@ -174,9 +179,20 @@ install_idol;
 test_idol_install;
 
 #################################
-## DEFINE IDOL BASE DIRECTORY  ##
+##   DEFINE IDOL CONFIG FILE   ##
 #################################
-sed -i -e "s+PLACEHOLD_BASE_DIR+${BASE_DIR}+g" ${BASE_DIR}/bin/idol;
+CONFIG_FILE=${BASE_DIR}/config/idol.config;
+sed -i -e "s+PLACEHOLD_CONFIG_FILE+${CONFIG_FILE}+g" ${BASE_DIR}/bin/idol;
+
+#################################
+##      BUILD CONFIG FILE      ##
+#################################
+sed -i -e "s+PLACEHOLD_BASE_DIR+${BASE_DIR}+g" ${BASE_DIR}/config/idol.config;
+sed -i -e "s+PLACEHOLD_BIN_DIR+${BIN_DIR}+g" ${BASE_DIR}/config/idol.config;
+sed -i -e "s+PLACEHOLD_LIB_DIR+${LIB_DIR}+g" ${BASE_DIR}/config/idol.config;
+sed -i -e "s+PLACEHOLD_LOG_DIR+${LOG_DIR}+g" ${BASE_DIR}/config/idol.config;
+sed -i -e "s+PLACEHOLD_TEST_DIR+${TEST_DIR}+g" ${BASE_DIR}/config/idol.config;
+sed -i -e "s+PLACEHOLD_MAN_DIR+${MAN_DIR}+g" ${BASE_DIR}/config/idol.config;
 
 #################################
 ##          EDIT PATH:         ##

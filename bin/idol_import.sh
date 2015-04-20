@@ -16,15 +16,15 @@ alert_and_verify() {
 	echo "";
 	echo "";
 	
-	echo "Issued alert to user." >> ${LOG_OUT};
+	echo "Issued alert to user." >> ${CURRENT_LOG};
 
 	read -p "Do you wish to overwrite the existing Idol?  [y/n] : " REPLY;
 	echo "";
 
 	case "$REPLY" in
 		"y" | "Y" )
-			echo "User has elected to overwrite the existing Idol." >> ${LOG_OUT};
-		    echo "The Idol "${IDOL_NAME}" will be overwritten." | tee -a ${LOG_OUT};
+			echo "User has elected to overwrite the existing Idol." >> ${CURRENT_LOG};
+		    echo "The Idol "${IDOL_NAME}" will be overwritten." | tee -a ${CURRENT_LOG};
 		    rm -rf ${TEST_DIR}/${IDOL_NAME};
 		    import_idol;
 		    ;;
@@ -39,21 +39,21 @@ alert_and_verify() {
 }
 
 handoff() {
-    echo "idol_import.sh has been kicked off by idol.sh..." | tee -a ${LOG_OUT};
-    echo "idol_import.sh is initiating hash and full bats tests..." | tee -a ${LOG_OUT};
-    echo "" | tee -a ${LOG_OUT};
+    echo "idol_import.sh has been kicked off by idol.sh..." | tee -a ${CURRENT_LOG};
+    echo "idol_import.sh is initiating hash and full bats tests..." | tee -a ${CURRENT_LOG};
+    echo "" | tee -a ${CURRENT_LOG};
 }
 
 cancel() {
-    echo "" | tee -a ${LOG_OUT};
-    echo "idol_import.sh has been cancelled." | tee -a ${LOG_OUT};
-    echo "The idol will not be imported" | tee -a ${LOG_OUT};
+    echo "" | tee -a ${CURRENT_LOG};
+    echo "idol_import.sh has been cancelled." | tee -a ${CURRENT_LOG};
+    echo "The idol will not be imported" | tee -a ${CURRENT_LOG};
     exit 1;
 }
 
 completion() {
-    echo "" | tee -a ${LOG_OUT};
-    echo "idol_import.sh has successfully imported idol "$IDOL_NAME | tee -a ${LOG_OUT};
+    echo "" | tee -a ${CURRENT_LOG};
+    echo "idol_import.sh has successfully imported idol "$IDOL_NAME | tee -a ${CURRENT_LOG};
     exit 0;
 }
 
@@ -76,7 +76,7 @@ get_idol() {
 		IDOL_NAME_LOCATION=$REPLY;
 		verify_idol_existing;
 	else
-		echo "The specified file does not exist or is not an Idol." | tee -a ${LOG_OUT};
+		echo "The specified file does not exist or is not an Idol." | tee -a ${CURRENT_LOG};
 		cancel;
 	fi
 }
@@ -85,8 +85,8 @@ verify_idol_existing() {
 	IDOL_PACKAGE_NAME=$(basename $IDOL_NAME_LOCATION);
 	IDOL_NAME=${IDOL_PACKAGE_NAME%.idol};
 
-	echo "Verifying Idol "${IDOL_NAME}"..." | tee -a ${LOG_OUT};
-	echo ""  | tee -a ${LOG_OUT};
+	echo "Verifying Idol "${IDOL_NAME}"..." | tee -a ${CURRENT_LOG};
+	echo ""  | tee -a ${CURRENT_LOG};
 	if [[ -e ${TEST_DIR}/${IDOL_NAME} ]]; then
 		alert_and_verify;
 	else
@@ -99,7 +99,6 @@ import_idol() {
 	completion;
 }
 
-
 #################################
 ##         READ INPUT:         ##
 #################################
@@ -111,17 +110,11 @@ if [ $# -ne $EXPECTED_ARGS ]; then
 	cancel;
 fi
 
-
 #################################
 ##        DECLARATIONS:        ##
 #################################
-BASE_DIR=$1;
-LOG_OUT=$2;
-
-TEST_DIR=$BASE_DIR/tests;
-IDOL_DIR=$TEST_DIR/$IDOL_NAME;
-FULL_BATS=$IDOL_DIR/full_bats;
-HASH_BATS=$IDOL_DIR/hash_bats;
+CURRENT_LOG=$1;
+TEST_DIR=$2;
 
 #################################
 ##       ACCEPT HANDOFF        ##

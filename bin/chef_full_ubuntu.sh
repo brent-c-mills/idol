@@ -3,7 +3,7 @@
 set -e
 
 completion() {
-    echo "chef_full_ubuntu.sh has completed for idol "${IDOL_NAME} | tee -a ${LOG_OUT};
+    echo "chef_full_ubuntu.sh has completed for idol "${IDOL_NAME} | tee -a ${CURRENT_LOG};
     echo "Bats Tests Generated: "$(grep -c "@test" ${OUTPUT_BATS});
     exit 0;
 }
@@ -13,7 +13,7 @@ generate_chef_cookbook_bats() {
 
         COOKBOOK=${cookbook};
 
-        echo "Adding chef_full test for cookbook "${COOKBOOK} >> ${LOG_OUT};
+        echo "Adding chef_full test for cookbook "${COOKBOOK} >> ${CURRENT_LOG};
         echo "@test \"CHEF CHECK - cookbook "${COOKBOOK}"\" {" >> ${OUTPUT_BATS};
         echo "knife cookbook list | grep '""${COOKBOOK}""'" >> ${OUTPUT_BATS};
         echo "[ \$? -eq 0 ]" >> ${OUTPUT_BATS};
@@ -29,7 +29,7 @@ generate_chef_recipe_bats() {
 
         RECIPE=${recipe};
 
-        echo "Adding chef_full test for recipe "${RECIPE} >> ${LOG_OUT};
+        echo "Adding chef_full test for recipe "${RECIPE} >> ${CURRENT_LOG};
         echo "@test \"CHEF CHECK - recipe "${RECIPE}"\" {" >> ${OUTPUT_BATS};
         echo "knife recipe list | grep '""${RECIPE}""'" >> ${OUTPUT_BATS};
         echo "[ \$? -eq 0 ]" >> ${OUTPUT_BATS};
@@ -51,10 +51,10 @@ generate_chef_recipe_list() {
 }
 
 handoff() {
-    echo "chef_full_ubuntu.sh has been kicked off by idol_create.sh..." | tee -a ${LOG_OUT};
-    echo "chef_full_ubuntu.sh is initiating full chef BATS creation..." | tee -a ${LOG_OUT};
-    echo "idol name.................."${IDOL_NAME} | tee -a ${LOG_OUT};
-    echo "" | tee -a ${LOG_OUT};
+    echo "chef_full_ubuntu.sh has been kicked off by idol_create.sh..." | tee -a ${CURRENT_LOG};
+    echo "chef_full_ubuntu.sh is initiating full chef BATS creation..." | tee -a ${CURRENT_LOG};
+    echo "idol name.................."${IDOL_NAME} | tee -a ${CURRENT_LOG};
+    echo "" | tee -a ${CURRENT_LOG};
 }
 
 initialize_bats() {
@@ -66,7 +66,7 @@ initialize_bats() {
 }
 
 skip() {
-    echo "Chef is not installed on this system." | tee -a ${LOG_OUT};
+    echo "Chef is not installed on this system." | tee -a ${CURRENT_LOG};
     exit 0;
 }
 
@@ -76,7 +76,7 @@ verify_chef() {
     fi
 
     if [[ $(`knife list recipe 2> /dev/null`) != 0 ]]; then
-        echo "Chef has encountered an error.  Skipping Chef full BATS generation..." | tee -a ${LOG_OUT};
+        echo "Chef has encountered an error.  Skipping Chef full BATS generation..." | tee -a ${CURRENT_LOG};
         skip;
     fi
 }
@@ -86,7 +86,7 @@ verify_chef() {
 #################################
 FULL_BATS=$1;
 IDOL_NAME=$2;
-LOG_OUT=$3;
+CURRENT_LOG=$3;
 
 OUTPUT_BATS=${FULL_BATS}/chef_full.bats;
 

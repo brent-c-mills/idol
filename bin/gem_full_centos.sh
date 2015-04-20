@@ -3,7 +3,7 @@
 set -e
 
 completion() {
-    echo "gem_full_centos.sh has completed for idol "${IDOL_NAME} | tee -a ${LOG_OUT};
+    echo "gem_full_centos.sh has completed for idol "${IDOL_NAME} | tee -a ${CURRENT_LOG};
     echo "Bats Tests Generated: "$(grep -c "@test" ${OUTPUT_BATS});
     exit 0;
 }
@@ -13,7 +13,7 @@ generate_gem_bats() {
 
         GEM=${gem};
 
-        echo "Adding gem_full test for "${GEM} >> ${LOG_OUT};
+        echo "Adding gem_full test for "${GEM} >> ${CURRENT_LOG};
         echo "@test \"RUBY GEM CHECK - "${GEM}"\" {" >> ${OUTPUT_BATS};
         echo "gem list --local | grep \""${GEM}"\"" >> ${OUTPUT_BATS};
         echo "[ \$? -eq 0 ]" >> ${OUTPUT_BATS};
@@ -30,10 +30,10 @@ generate_gem_list() {
 }
 
 handoff() {
-    echo "gem_full_centos.sh has been kicked off by idol_create.sh..." | tee -a ${LOG_OUT};
-    echo "gem_full_centos.sh is initiating full gem BATS creation..." | tee -a ${LOG_OUT};
-    echo "idol name.................."${IDOL_NAME} | tee -a ${LOG_OUT};
-    echo "" | tee -a ${LOG_OUT};
+    echo "gem_full_centos.sh has been kicked off by idol_create.sh..." | tee -a ${CURRENT_LOG};
+    echo "gem_full_centos.sh is initiating full gem BATS creation..." | tee -a ${CURRENT_LOG};
+    echo "idol name.................."${IDOL_NAME} | tee -a ${CURRENT_LOG};
+    echo "" | tee -a ${CURRENT_LOG};
 }
 
 initialize_bats() {
@@ -45,7 +45,7 @@ initialize_bats() {
 }
 
 skip() {
-    echo "Ruby is not installed on this system." | tee -a ${LOG_OUT};
+    echo "Ruby is not installed on this system." | tee -a ${CURRENT_LOG};
     exit 0;
 }
 
@@ -60,7 +60,7 @@ verify_ruby() {
 #################################
 FULL_BATS=$1;
 IDOL_NAME=$2;
-LOG_OUT=$3;
+CURRENT_LOG=$3;
 
 OUTPUT_BATS=${FULL_BATS}/gem_full.bats;
 

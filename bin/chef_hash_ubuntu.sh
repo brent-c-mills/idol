@@ -3,7 +3,7 @@
 set -e
 
 completion() {
-    echo "chef_hash_ubuntu.sh has completed for idol "${IDOL_NAME} | tee -a ${LOG_OUT};
+    echo "chef_hash_ubuntu.sh has completed for idol "${IDOL_NAME} | tee -a ${CURRENT_LOG};
     echo "Bats Tests Generated: "$(grep -c "@test" ${OUTPUT_BATS});
     exit 0;
 }
@@ -28,10 +28,10 @@ generate_chef_hash_bats() {
 }
 
 handoff() {
-    echo "chef_hash_ubuntu.sh has been kicked off by idol_create.sh..." | tee -a ${LOG_OUT};
-    echo "chef_hash_ubuntu.sh is initiating chef hash BATS creation..." | tee -a ${LOG_OUT};
-    echo "idol name.................."${IDOL_NAME} | tee -a ${LOG_OUT};
-    echo "" | tee -a ${LOG_OUT};
+    echo "chef_hash_ubuntu.sh has been kicked off by idol_create.sh..." | tee -a ${CURRENT_LOG};
+    echo "chef_hash_ubuntu.sh is initiating chef hash BATS creation..." | tee -a ${CURRENT_LOG};
+    echo "idol name.................."${IDOL_NAME} | tee -a ${CURRENT_LOG};
+    echo "" | tee -a ${CURRENT_LOG};
 }
 
 initialize_bats() {
@@ -43,7 +43,7 @@ initialize_bats() {
 }
 
 skip() {
-    echo "Chef is not installed on this system." | tee -a ${LOG_OUT};
+    echo "Chef is not installed on this system." | tee -a ${CURRENT_LOG};
     exit 0;
 }
 
@@ -53,7 +53,7 @@ verify_chef() {
     fi
 
     if [[ $(`knife list recipe 2> /dev/null`) != 0 ]]; then
-        echo "Chef has encountered an error.  Skipping Chef full BATS generation..." | tee -a ${LOG_OUT};
+        echo "Chef has encountered an error.  Skipping Chef full BATS generation..." | tee -a ${CURRENT_LOG};
         skip;
     fi
 }
@@ -63,7 +63,7 @@ verify_chef() {
 #################################
 HASH_BATS=$1;
 IDOL_NAME=$2;
-LOG_OUT=$3;
+CURRENT_LOG=$3;
 
 OUTPUT_BATS=${HASH_BATS}/chef_hash.bats;
 

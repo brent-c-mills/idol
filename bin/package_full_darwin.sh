@@ -3,7 +3,7 @@
 set -e
 
 completion() {
-    echo "package_full_darwin.sh has completed for idol "${IDOL_NAME} | tee -a ${LOG_OUT};
+    echo "package_full_darwin.sh has completed for idol "${IDOL_NAME} | tee -a ${CURRENT_LOG};
     echo "Bats Tests Generated: "$(grep -c "@test" ${OUTPUT_BATS});
     exit 0;
 }
@@ -13,7 +13,7 @@ generate_package_bats() {
 
         PACKAGE=${package};
 
-        echo "Adding package_full test for "${PACKAGE} >> ${LOG_OUT};
+        echo "Adding package_full test for "${PACKAGE} >> ${CURRENT_LOG};
         echo "@test \"SOFTWARE CHECK - "${PACKAGE}"\" {" >> ${OUTPUT_BATS};
         echo "ls /Applications | grep \""${PACKAGE}"\"" >> ${OUTPUT_BATS};
         echo "[ \$? -eq 0 ]" >> ${OUTPUT_BATS};
@@ -29,10 +29,10 @@ generate_package_list() {
 }
 
 handoff() {
-    echo "package_full_darwin.sh has been kicked off by idol_create.sh..." | tee -a ${LOG_OUT};
-    echo "package_full_darwin.sh is initiating full package BATS creation..." | tee -a ${LOG_OUT};
-    echo "idol name.................."${IDOL_NAME} | tee -a ${LOG_OUT};
-    echo "" | tee -a ${LOG_OUT};
+    echo "package_full_darwin.sh has been kicked off by idol_create.sh..." | tee -a ${CURRENT_LOG};
+    echo "package_full_darwin.sh is initiating full package BATS creation..." | tee -a ${CURRENT_LOG};
+    echo "idol name.................."${IDOL_NAME} | tee -a ${CURRENT_LOG};
+    echo "" | tee -a ${CURRENT_LOG};
 }
 
 initialize_bats() {
@@ -48,7 +48,7 @@ initialize_bats() {
 #################################
 FULL_BATS=$1;
 IDOL_NAME=$2;
-LOG_OUT=$3;
+CURRENT_LOG=$3;
 
 OUTPUT_BATS=${FULL_BATS}/package_full.bats;
 

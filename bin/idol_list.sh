@@ -33,4 +33,3 @@ fi
 echo "";
 
 #Output list of current golden images
-

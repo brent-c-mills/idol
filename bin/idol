@@ -7,81 +7,79 @@ clear;
 ##        DECLARATIONS:        ##
 #################################
 
-##--DECLARING DIRECTORY STRUCTURE
-
-	BASE_DIR="PLACEHOLD_BASE_DIR";
-
-	NOW=$(date +"%m_%d_%Y_%H%M");
-	BIN_DIR=${BASE_DIR}/bin;
-	LIB_DIR=${BASE_DIR}/lib;
-	LOG_DIR=${BASE_DIR}/log;
-	LOG_OUT=$LOG_DIR/log_$NOW.log;
-	TEST_DIR=${BASE_DIR}/tests;
-	MAN_DIR=${BASE_DIR}/man;
-
 ##--DECLARING FUNCTIONS
-
-version() {
-	echo "Idol 1.1.0";
+create_idol() {
+  ${BIN_DIR}/idol_create.sh ${OPERATING_SYSTEM} ${IDOL_NAME} ${CURRENT_LOG} ${BASE_DIR} ${BIN_DIR} ${LIB_DIR} ${TEST_DIR};
 }
 
-usage() {
-	version
-	echo "Usage: idol [-hlpv] [-c name] [-t name] [--longoption ...]";
+create_log() {
+  touch ${CURRENT_LOG};
+}
+
+delete_idol() {
+  ${BIN_DIR}/idol_delete.sh ${IDOL_NAME} ${CURRENT_LOG} ${TEST_DIR};
+}
+
+fingerprint() {
+  if [[ -a /etc/centos-release ]] || [[ -a /etc/redhat-release ]]; then
+    echo "Host OS recognized as CentOS / Redhat." | tee -a ${CURRENT_LOG};
+    OPERATING_SYSTEM="centos";
+
+  elif [[ -a /etc/os-release ]]; then
+    echo "Host OS recognized as Debian / Ubuntu." | tee -a ${CURRENT_LOG};
+    OPERATING_SYSTEM="ubuntu";
+
+  elif [[ "$(uname)" -eq "Darwin" ]]; then
+    echo "Host OS recognized as Apple OS X." | tee -a ${CURRENT_LOG};
+    OPERATING_SYSTEM="darwin";
+  else echo "Sorry.  This operating system is not supported at this time." | tee -a ${CURRENT_LOG}; exit 5;
+  fi
 }
 
 help() {
 	${MAN_DIR}/idol_man.sh;
 }
 
+import_idol() {
+  ${BIN_DIR}/idol_import.sh ${CURRENT_LOG} ${TEST_DIR};
+}
+
 list_idol() {
 	${BIN_DIR}/idol_list.sh ${TEST_DIR};
 }
 
-fingerprint() {
-	if [[ -a /etc/centos-release ]] || [[ -a /etc/redhat-release ]]; then
-		echo "Host OS recognized as CentOS / Redhat." | tee -a ${LOG_OUT};
-		OPERATING_SYSTEM="centos";
-
-	elif [[ -a /etc/os-release ]]; then
-		echo "Host OS recognized as Debian / Ubuntu." | tee -a ${LOG_OUT};
-		OPERATING_SYSTEM="ubuntu";
-
-	elif [[ "$(uname)" -eq "Darwin" ]]; then
-		echo "Host OS recognized as Apple OS X." | tee -a ${LOG_OUT};
-		OPERATING_SYSTEM="darwin";
-	else echo "Sorry.  This operating system is not supported at this time." | tee -a ${LOG_OUT}; exit 5;
-	fi
+package_idol() {
+  ${BIN_DIR}/idol_package.sh ${CURRENT_LOG} ${BASE_DIR} ${TEST_DIR};
 }
 
-create_idol() {
-	${BIN_DIR}/idol_create.sh ${OPERATING_SYSTEM} ${IDOL_NAME} ${BASE_DIR} ${LOG_OUT};
-}
-
-delete_idol() {
-	${BIN_DIR}/idol_delete.sh ${IDOL_NAME} ${BASE_DIR} ${LOG_OUT};
-}
-
-import_idol() {
-	${BIN_DIR}/idol_import.sh ${BASE_DIR} ${LOG_OUT};
+read_config() {
+  source ${CONFIG_FILE};
 }
 
 test_idol() {
-	${BIN_DIR}/idol_test.sh ${IDOL_NAME} ${BASE_DIR} ${LOG_OUT};
+	${BIN_DIR}/idol_test.sh ${IDOL_NAME} ${CURRENT_LOG} ${BASE_DIR} ${TEST_DIR};
 }
 
-package_idol() {
-	${BIN_DIR}/idol_package.sh ${BASE_DIR} ${LOG_OUT};
+usage() {
+  version
+  echo "Usage: idol [-hlpv] [-c name] [-t name] [--longoption ...]";
 }
 
-create_log() {
-	touch ${LOG_OUT};
+version() {
+  echo "Idol 1.1.0";
 }
+
+#################################
+##         READ_CONFIG:        ##
+#################################
+CONFIG_FILE="PLACEHOLD_CONFIG_FILE";
+read_config;
+
+CURRENT_LOG=${LOG_OUT};
 
 #################################
 ##        ACCEPT INPUT:        ##
 #################################
-
 options=()
 arguments=()
 for arg in "$@"; do
