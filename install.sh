@@ -138,7 +138,6 @@ test_idol_install() {
 	fi
 }
 
-
 #################################
 ##    FIND BASE DIRECTORY:     ##
 #################################
@@ -153,7 +152,6 @@ INSTALL_LOG=${BASE_DIR}/log/install.log;
 rm -f ${INSTALL_LOG};
 mkdir -p "$(dirname ${INSTALL_LOG})" && touch ${INSTALL_LOG};
 
-
 #################################
 ##       CHECK FOR BATS:       ##
 #################################
@@ -165,24 +163,20 @@ check_bats;
 #################################
 test_bats_install;
 
-
 #################################
 ##  CHECK IDOL FILESTRUCTURE:  ##
 #################################
 install_idol;
-
 
 #################################
 ##  CHECK IDOL FILESTRUCTURE:  ##
 #################################
 test_idol_install;
 
-
 #################################
 ## DEFINE IDOL BASE DIRECTORY  ##
 #################################
 sed -i -e "s+PLACEHOLD_BASE_DIR+${BASE_DIR}+g" ${BASE_DIR}/bin/idol;
-
 
 #################################
 ##          EDIT PATH:         ##
@@ -190,7 +184,6 @@ sed -i -e "s+PLACEHOLD_BASE_DIR+${BASE_DIR}+g" ${BASE_DIR}/bin/idol;
 echo "export PATH="${BASE_DIR}/bin:"\$PATH" >> ~/.bash_profile;
 source ~/.bash_profile; #Works on some systems.
 . ~/.bash_profile; #Works on some systems.
-
 
 #################################
 ##          COMPLETION         ##

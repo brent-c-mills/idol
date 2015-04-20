@@ -19,10 +19,6 @@ create_idol_readme() {
 }
 
 copy_bats_requirements() {
-
-	#Temporarily commenting out these additions as they seem to cause more issues than they solve.
-	#All bats generation scripts will likewise have references to these files commented out.
-
 	cp -r $LIB_DIR/fixtures $FULL_BATS/;
 	cp -r $LIB_DIR/test_helper.bash $FULL_BATS/;
 	mkdir $FULL_BATS/tmp;
@@ -49,7 +45,6 @@ create_bats_tests(){
 #################################
 ##         READ INPUT:         ##
 #################################
-
 EXPECTED_ARGS=4
 
 if [ $# -ne $EXPECTED_ARGS ]
@@ -61,7 +56,6 @@ fi
 #################################
 ##        DECLARATIONS:        ##
 #################################
-
 OPERATING_SYSTEM=$1;
 IDOL_NAME=$2;
 BASE_DIR=$3;
@@ -82,17 +76,13 @@ HASH_BATS=$IDOL_DIR/hash_bats;
 #################################
 
 #CREATING IDOL (BATS TEST DIRECTORY)...
-
 create_idol_dir
 
 #CREATE A IDOL-SPECIFIC README WITH SOME BASIC INFORMATION
-
 create_idol_readme
 
 #COPY NEEDED FILES INTO IDOL DIRECTORY...
-
 copy_bats_requirements
 
 #CREATE BATS TESTS BY CATEGORY
-
 create_bats_tests

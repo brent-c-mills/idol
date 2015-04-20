@@ -29,6 +29,8 @@ describe_spec() {
 		echo "  it { should be_mode "${file_perms}" }" >> ${spec_test};
 	fi
 
+	read_file_lines ${file_name};
+
 	echo "end" >> ${spec_test};
 	echo "" >> ${spec_test};
 }
@@ -46,8 +48,17 @@ read_all_files() {
 	rm /tmp/conf_files;
 }
 
-read_individual_file() {
+read_file_lines() {
+	local file_name=${1}
+  while read -r file_line || [[ -n $file_line ]]; do
+    IFS=' ' read -a array <<< ${file_line};
+    if [[ ${array[0]} ]] && [[ ! ${array[0]} =~ \# ]] && [[ ! ${file_line} =~ \[ ]] && [[ ! ${file_line} =~ \` ]]; then
+      echo "  it { should contain '"${file_line}"' }" >> ${spec_test};
+    fi;
+  done < ${file_name};
+}
 
+read_individual_file() {
 	local file_name=$(sed "${i}q;d" /tmp/conf_files);
 	describe_spec ${file_name};
 }
