@@ -8,6 +8,20 @@ clear;
 #################################
 
 ##--DECLARING FUNCTIONS
+check_mode() {
+  if [[ ${IDOL_MODE} = "solo" ]]; then
+    echo "SOLO MODE";
+  elif [[ ${IDOL_MODE} = "client" ]]; then
+    echo "CLIENT MODE";
+  elif [[ ${IDOL_MODE} = "server" ]]; then
+    echo "SERVER MODE";
+  else
+    echo "ERROR -- INVALID CONFIGURATION";
+    echo "INVALID MODE " ${IDOL_MODE};
+    exit 1;
+  fi
+}
+
 create_idol() {
   ${BIN_DIR}/idol_create.sh ${OPERATING_SYSTEM} ${IDOL_NAME} ${CURRENT_LOG} ${BASE_DIR} ${BIN_DIR} ${LIB_DIR} ${TEST_DIR};
 }
@@ -45,7 +59,12 @@ import_idol() {
 }
 
 list_idol() {
-	${BIN_DIR}/idol_list.sh ${TEST_DIR};
+  if [[ ${IDOL_MODE} = "solo" ]] || [[ ${IDOL_MODE} = "server" ]]; then
+    ${BIN_DIR}/idol_list.sh ${TEST_DIR};
+  elif [[ ${IDOL_MODE} = "client" ]]; then
+    scp -r ${SERVER_USERNAME}@${SERVER_URL}:${SERVER_TEST_DIR}/* ${TEST_DIR};
+    ${BIN_DIR}/idol_list.sh ${TEST_DIR};
+  fi
 }
 
 package_idol() {
@@ -54,6 +73,7 @@ package_idol() {
 
 read_config() {
   source ${CONFIG_FILE};
+  check_mode;
 }
 
 test_idol() {
@@ -70,11 +90,14 @@ version() {
 }
 
 #################################
-##         READ_CONFIG:        ##
+##         READ CONFIG:        ##
 #################################
 CONFIG_FILE="PLACEHOLD_CONFIG_FILE";
 read_config;
 
+#################################
+##          SET LOG:           ##
+#################################
 CURRENT_LOG=${LOG_OUT};
 
 #################################

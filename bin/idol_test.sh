@@ -3,18 +3,20 @@
 set -e;
 
 completion() {
+    fail_list_generate;
     echo "" | tee -a ${CURRENT_LOG};
     echo "idol_test.sh has completed testing for idol "$IDOL_NAME | tee -a ${CURRENT_LOG};
     echo "";
     echo "";
     echo "____________RESULTS_____________";
-    echo "Tests Run:    "$(grep -c "ok " ${CURRENT_LOG});
-    echo "Tests Failed: "$(grep -c "not ok " ${CURRENT_LOG});
+    echo "Tests Run:          "$(grep -c "ok " ${CURRENT_LOG});
+    echo "Hash Tests Failed:  "$(grep "not ok " ${FAIL_LIST} | grep -c "HASH");
+    echo "Tests Failed:       "$(grep -v "HASH" ${FAIL_LIST} | grep -c "not ok");
     echo "";
     echo "Failed tests are stored in "${FAIL_LIST}".";
     echo "";
-    if [[ $(grep -c "not ok " ${CURRENT_LOG}) -ne 0 ]]; then
-    	fail_list_generate;
+    if [[ $(grep -v "HASH" ${FAIL_LIST} | grep -c "not ok") -ne 0 ]]; then
+    	exit 1;
     fi
     exit 0;
 }
