@@ -43,7 +43,7 @@ for (( i=1; i<=${FAIL_COUNT}; i++ )); do
 done;
 
 #OUTPUT TO EMAIL
-#Uncommend and update below data for email logging
+#Uncomment and update below data for email logging
 #__________________________________________________
 #
 #FAIL_EMAIL=/tmp/fail_email.txt;
@@ -82,7 +82,6 @@ handoff() {
 }
 
 hash_bats_test() {
-
 	local hash_bats_name=$(basename ${hashbats});
 	IFS=_ read bats_category bats_type <<< ${hash_bats_name};
 	echo "" | tee -a ${CURRENT_LOG};
@@ -96,7 +95,6 @@ hash_bats_test() {
     	echo ${hash_bats_name}" matches the golden image for this Idol." | tee -a ${CURRENT_LOG};
     	echo "Completed hash bats test for "${IDOL_NAME}" : "${bats_category}"." | tee -a ${CURRENT_LOG};
 	fi
-
 }
 
 verify_idol() {
@@ -148,7 +146,7 @@ verify_idol;
 ##       TEST HASH BATS        ##
 #################################
 for hashbats in ${HASH_BATS}/*.bats; do
-    hash_bats_test;
+  hash_bats_test;
 done
 
 #################################
